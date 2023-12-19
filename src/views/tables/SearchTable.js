@@ -1,9 +1,7 @@
-import * as React from 'react';
-
 import { Box } from '@mui/material';
-import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import ProductTableList from 'src/components/apps/ecommerce/ProductTableList/ProductTableList';
+import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
+import CategoryPage from 'src/pages/CategoryPage';
 
 const BCrumb = [
   {
@@ -22,7 +20,7 @@ const SearchTable = () => {
       <Breadcrumb title="Abacus" items={BCrumb} />
       {/* end breadcrumb */}
       <Box>
-        <ProductTableList />
+        <CategoryPage />
       </Box>
     </PageContainer>
   );

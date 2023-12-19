@@ -1,21 +1,18 @@
-import * as React from 'react';
-
 import { Box } from '@mui/material';
-import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
-import PageContainer from 'src/components/container/PageContainer';
-import ProductTableList from 'src/components/apps/ecommerce/ProductTableList/ProductTableList';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { fetchAllFranchises } from 'src/store/reducers/franchiseSlice';
+import { useDispatch } from 'react-redux';
 import FranchiseList from 'src/components/FranchiseList';
+import PageContainer from 'src/components/container/PageContainer';
+import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
+import { fetchAllFranchises } from 'src/store/reducers/franchiseSlice';
+// import FranchiseList from 'src/components/FranchiseList';
 
 const FranchisePage = () => {
   const dispatch = useDispatch();
 
   const BCrumb = [
     {
-      to: '/',
+      to: '/dashboard/home',
       title: 'Home',
     },
     {
@@ -30,10 +27,10 @@ const FranchisePage = () => {
   return (
     <PageContainer title="Franchise" description="this is Search Table page">
       {/* breadcrumb */}
-      {/* <Breadcrumb title={currentSubject?.name} items={BCrumb} /> */}
+      <Breadcrumb title={'Franchises'} items={BCrumb} />
       {/* end breadcrumb */}
       <Box>
-        <FranchiseList subjectId={'kjhbhbku'} />
+        <FranchiseList />
       </Box>
     </PageContainer>
   );

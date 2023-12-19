@@ -1,9 +1,9 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import { format } from 'date-fns';
 import {
   Box,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -12,29 +12,26 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  Toolbar,
-  IconButton,
-  Tooltip,
-  FormControlLabel,
-  Typography,
-  Avatar,
   TextField,
-  InputAdornment,
-  Paper,
-  Button,
+  Toolbar,
+  Tooltip,
+  Typography,
 } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import { format } from 'date-fns';
+import PropTypes from 'prop-types';
+import * as React from 'react';
 
 import { visuallyHidden } from '@mui/utils';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchProducts } from 'src/store/apps/eCommerce/EcommerceSlice';
-import CustomCheckbox from '../../../forms/theme-elements/CustomCheckbox';
-import CustomSwitch from '../../../forms/theme-elements/CustomSwitch';
-import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/icons';
-import { fetchCategories, fetchCategoriesBySubjectId } from 'src/store/reducers/categorySlice';
-import CategoryAdd from 'src/components/project/CategoryAdd';
 import { Quiz } from '@mui/icons-material';
+import { IconFilter, IconSearch, IconTrash } from '@tabler/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import CategoryAdd from 'src/components/project/CategoryAdd';
+import { fetchCategoriesBySubjectId } from 'src/store/reducers/categorySlice';
+import CustomCheckbox from '../components/forms/theme-elements/CustomCheckbox';
+import CustomSwitch from '../components/forms/theme-elements/CustomSwitch';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -222,7 +219,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const ProductTableList = (props) => {
+const CategoryPage = (props) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -470,4 +467,4 @@ const ProductTableList = (props) => {
   );
 };
 
-export default ProductTableList;
+export default CategoryPage;

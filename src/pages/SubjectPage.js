@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 import { Box } from '@mui/material';
-import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
-import PageContainer from 'src/components/container/PageContainer';
-import ProductTableList from 'src/components/apps/ecommerce/ProductTableList/ProductTableList';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSubjectById } from 'src/store/reducers/subjectSlice';
 import { useParams } from 'react-router-dom';
+import PageContainer from 'src/components/container/PageContainer';
+import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
+import CategoryPage from 'src/pages/CategoryPage';
+import { fetchSubjectById } from 'src/store/reducers/subjectSlice';
 
 const SubjectPage = () => {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const SubjectPage = () => {
       <Breadcrumb title={currentSubject?.name} items={BCrumb} />
       {/* end breadcrumb */}
       <Box>
-        <ProductTableList subjectId={subjectId} />
+        <CategoryPage subjectId={subjectId} />
       </Box>
     </PageContainer>
   );

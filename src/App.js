@@ -1,11 +1,10 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { useNavigate, useRoutes } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { ThemeSettings } from './theme/Theme';
-import RTL from './layouts/full/shared/customizer/RTL';
+import { useNavigate, useRoutes } from 'react-router-dom';
 import ScrollToTop from './components/shared/ScrollToTop';
 import Router from './routes/Router';
-import { useEffect } from 'react';
+import { ThemeSettings } from './theme/Theme';
 
 function App() {
   const routing = useRoutes(Router);

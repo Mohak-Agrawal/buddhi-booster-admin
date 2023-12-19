@@ -1,12 +1,12 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { store } from './store/Store';
-import Spinner from './views/spinner/Spinner';
+import App from './App';
 import './_mockApis';
+import { store } from './store/Store';
 import './utils/i18n';
+import Spinner from './views/spinner/Spinner';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

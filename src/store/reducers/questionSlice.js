@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Replace 'YOUR_BASE_API_URL' with your actual base API URL
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:8000';
 
 const initialState = {
   questions: [],

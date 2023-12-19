@@ -6,7 +6,7 @@ const API_BASE_URL = 'http://localhost:3000'; // Replace with your backend API b
 // Async thunk to fetch all franchises
 export const fetchAllFranchises = createAsyncThunk('franchises/fetchAllFranchises', async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/franchises`);
+    const response = await axios.get(`${API_BASE_URL}/franchise`);
     console.log({ response });
     return response.data;
   } catch (error) {

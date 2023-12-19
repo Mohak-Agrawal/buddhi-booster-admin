@@ -64,16 +64,16 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'categories',
+    id: 'userName',
     numeric: false,
     disablePadding: false,
-    label: 'Categories',
+    label: 'Name',
   },
   {
     id: 'pname',
     numeric: false,
     disablePadding: false,
-    label: 'Date',
+    label: 'Email',
   },
 
   {
@@ -141,10 +141,10 @@ function EnhancedTableHead(props) {
   );
 }
 
-const [open, setOpen] = React.useState(false);
+// const [open, setOpen] = React.useState(false);
 
 const toggle = () => {
-  setOpen(!open);
+  // setOpen(!open);
   // onClose();
 };
 
@@ -202,10 +202,10 @@ const EnhancedTableToolbar = (props) => {
           />
           <div>
             <FranchiseAdd
-              subjectId={props?.subjectId}
-              open={open}
-              setOpen={setOpen}
-              toggle={toggle}
+            // subjectId={props?.subjectId}
+            // open={open}
+            // setOpen={setOpen}
+            // toggle={toggle}
             />
             {/* <Button variant="contained">Add Category</Button>
             <Button variant="contained">Filters</Button> */}
@@ -392,7 +392,7 @@ const FranchiseList = (props) => {
                               }}
                             >
                               <Typography variant="h6" fontWeight="600">
-                                {row.name}
+                                {row.franchiseName}
                               </Typography>
                               {/* <Typography color="textSecondary" variant="subtitle2">
                                 {row.category}
@@ -401,7 +401,7 @@ const FranchiseList = (props) => {
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Typography>{format(new Date(), 'E, MMM d yyyy')}</Typography>
+                          <Typography>{row.email}</Typography>
                         </TableCell>
 
                         <TableCell>

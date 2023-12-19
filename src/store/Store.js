@@ -1,20 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
-import CustomizerReducer from './customizer/CustomizerSlice';
+import examsApi from './api/examsApi';
+import BlogReducer from './apps/blog/BlogSlice';
 import ChatsReducer from './apps/chat/ChatSlice';
-import NotesReducer from './apps/notes/NotesSlice';
-import EmailReducer from './apps/email/EmailSlice';
-import TicketReducer from './apps/tickets/TicketSlice';
 import ContactsReducer from './apps/contacts/ContactSlice';
 import EcommerceReducer from './apps/eCommerce/EcommerceSlice';
+import EmailReducer from './apps/email/EmailSlice';
+import NotesReducer from './apps/notes/NotesSlice';
+import TicketReducer from './apps/tickets/TicketSlice';
 import UserProfileReducer from './apps/userProfile/UserProfileSlice';
-import BlogReducer from './apps/blog/BlogSlice';
+import CustomizerReducer from './customizer/CustomizerSlice';
 import categorySlice from './reducers/categorySlice';
+import examSlice from './reducers/examSlice';
+import franchiseSlice from './reducers/franchiseSlice';
 import questionSlice from './reducers/questionSlice';
 import subjectSlice from './reducers/subjectSlice';
-import franchiseSlice from './reducers/franchiseSlice';
 
 export const store = configureStore({
   reducer: {
+    [examsApi.reducerPath]: examsApi.reducer,
     customizer: CustomizerReducer,
     chatReducer: ChatsReducer,
     emailReducer: EmailReducer,
@@ -28,7 +31,9 @@ export const store = configureStore({
     question: questionSlice,
     subjects: subjectSlice,
     franchises: franchiseSlice,
+    exams: examSlice,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(examsApi.middleware),
 });
 
 export default store;

@@ -1,10 +1,13 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import Loadable from '../layouts/full/shared/loadable/Loadable';
+import ExamPaperPage from 'src/pages/ExamPaperPage';
+import ExamPage from 'src/pages/ExamsPage';
+import FranchisePage from 'src/pages/FranchisePage';
+import LecturesPage from 'src/pages/LecturesPage';
 import QuestionsPage from 'src/pages/QuestionsPage';
 import SubjectPage from 'src/pages/SubjectPage';
-import FranchisePage from 'src/pages/FranchisePage';
+import Loadable from '../layouts/full/shared/loadable/Loadable';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -191,7 +194,10 @@ const Router = [
       // -----
       { path: '/subjects/:subjectId/*', element: <SubjectPage /> },
       { path: '/subjects/:subjectId/questions/:categoryId', element: <QuestionsPage /> },
-      { path: '/franchise', element: <FranchisePage /> },
+      { path: '/dashboard/franchises', element: <FranchisePage /> },
+      { path: '/dashboard/exams', element: <ExamPage /> },
+      { path: '/dashboard/exam-paper', element: <ExamPaperPage /> },
+      { path: '/dashboard/lectures', element: <LecturesPage /> },
 
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
