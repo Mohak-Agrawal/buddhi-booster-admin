@@ -7,6 +7,12 @@ const examsApi = createApi({
     getExams: builder.query({
       query: () => 'exams', // Adjust the endpoint based on your API structure
     }),
+    getExamById: builder.query({
+      query: (examId) => `exams/${examId}`,
+    }),
+    getQuestionsForExam: builder.query({
+      query: (examId) => `exams/${examId}/questions`, // Adjust the endpoint based on your API structure
+    }),
     createExam: builder.mutation({
       query: (newExam) => ({
         url: 'exams',
@@ -27,13 +33,43 @@ const examsApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getQuestionByIdForExam: builder.query({
+      query: ({ examId, questionId }) => `exams/${examId}/questions/${questionId}`,
+    }),
+    createQuestionForExam: builder.mutation({
+      query: ({ examId, questions }) => ({
+        url: `exams/${examId}/questions`,
+        method: 'POST',
+        body: { questions },
+      }),
+    }),
+    updateQuestionForExam: builder.mutation({
+      query: ({ examId, questionId, updatedQuestion }) => ({
+        url: `exams/${examId}/questions/${questionId}`,
+        method: 'PUT',
+        body: updatedQuestion,
+      }),
+    }),
+    deleteQuestionForExam: builder.mutation({
+      query: ({ examId, questionId }) => ({
+        url: `exams/${examId}/questions/${questionId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
 export const {
   useGetExamsQuery,
+  useGetExamByIdQuery,
+  useGetQuestionByIdForExamQuery,
+  useGetQuestionsForExamQuery,
   useCreateExamMutation,
   useUpdateExamMutation,
   useDeleteExamMutation,
+  useCreateQuestionForExamMutation,
+  useUpdateQuestionForExamMutation,
+  useDeleteQuestionForExamMutation,
 } = examsApi;
+
 export default examsApi;

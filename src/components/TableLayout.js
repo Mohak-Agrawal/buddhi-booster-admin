@@ -43,7 +43,7 @@ function getComparator(order, orderBy) {
 }
 
 function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
+  const stabilizedThis = array?.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
@@ -60,6 +60,7 @@ const EnhancedTableHead = ({
   rowCount,
   onRequestSort,
   headCells,
+  renderActionItems,
 }) => {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -99,7 +100,7 @@ const EnhancedTableHead = ({
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell>Action</TableCell>
+        {renderActionItems && <TableCell>Action</TableCell>}
       </TableRow>
     </TableHead>
   );
@@ -218,7 +219,7 @@ const TableLayout = ({
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -260,7 +261,7 @@ const TableLayout = ({
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows?.length) : 0;
 
   return (
     <Box>
@@ -287,8 +288,9 @@ const TableLayout = ({
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={rows?.length}
               headCells={headers}
+              renderActionItems={renderActionItems}
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
@@ -320,7 +322,7 @@ const TableLayout = ({
                         <TableCell key={header.id}>{row[header.id]}</TableCell>
                       ))}
 
-                      <TableCell>{renderActionItems(row)}</TableCell>
+                      {renderActionItems && <TableCell>{renderActionItems(row)}</TableCell>}
                     </TableRow>
                   );
                 })}
@@ -339,7 +341,7 @@ const TableLayout = ({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={rows?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

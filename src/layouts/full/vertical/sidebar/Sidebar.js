@@ -1,11 +1,11 @@
-import { useMediaQuery, Box, Drawer, useTheme, Typography } from '@mui/material';
-import SidebarItems from './SidebarItems';
-import Logo from '../../shared/logo/Logo';
-import { useSelector, useDispatch } from 'react-redux';
-import { hoverSidebar, toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
-import Scrollbar from 'src/components/custom-scroll/Scrollbar';
-import { Profile } from './SidebarProfile/Profile';
+import { Box, Drawer, useMediaQuery, useTheme } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import logo from 'src/assets/images/logos/logo.png';
+import Scrollbar from 'src/components/custom-scroll/Scrollbar';
+import { hoverSidebar, toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
+import Logo from '../../shared/logo/Logo';
+import SidebarItems from './SidebarItems';
+import { Profile } from './SidebarProfile/Profile';
 
 const Sidebar = () => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
@@ -75,10 +75,11 @@ const Sidebar = () => {
             {/* ------------------------------------------- */}
             <Box
               px={3}
-              py={2}
+              pt={2}
+              pb={1}
               style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              <img src={logo} style={{ width: '60%' }} />
+              <img src={logo} style={{ width: '75%' }} />
               {/* <Typography variant="h">Buddhi Booster</Typography> */}
             </Box>
             <Scrollbar sx={{ height: 'calc(100% - 190px)' }}>

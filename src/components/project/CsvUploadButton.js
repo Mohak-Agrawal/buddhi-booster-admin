@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Button, Typography, Input } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { useRef } from 'react';
 
 const CsvUploadButton = ({ onFileUpload }) => {
   const fileInputRef = useRef(null);
@@ -19,13 +19,15 @@ const CsvUploadButton = ({ onFileUpload }) => {
 
   return (
     <>
-      <Input
-        type="file"
-        inputProps={{ accept: '.csv' }}
-        onChange={handleFileChange}
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-      />
+      <div style={{ display: 'none' }}>
+        <input
+          type="file"
+          inputProps={{ accept: '.csv' }}
+          onChange={handleFileChange}
+          ref={fileInputRef}
+        />
+      </div>
+
       <Button variant="contained" color="primary" onClick={handleButtonClick}>
         <Typography>Upload CSV</Typography>
       </Button>

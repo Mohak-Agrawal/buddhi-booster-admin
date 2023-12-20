@@ -196,7 +196,7 @@ const Router = [
       { path: '/subjects/:subjectId/questions/:categoryId', element: <QuestionsPage /> },
       { path: '/dashboard/franchises', element: <FranchisePage /> },
       { path: '/dashboard/exams', element: <ExamPage /> },
-      { path: '/dashboard/exam-paper', element: <ExamPaperPage /> },
+      { path: '/dashboard/exam-questions/:examId', element: <ExamPaperPage /> },
       { path: '/dashboard/lectures', element: <LecturesPage /> },
 
       { path: '*', element: <Navigate to="/auth/404" /> },

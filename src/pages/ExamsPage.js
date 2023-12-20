@@ -2,6 +2,7 @@ import { Edit, Quiz } from '@mui/icons-material';
 import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import ExamDialog from 'src/components/ExamDialog';
 import TableLayout from 'src/components/TableLayout';
 import PageContainer from 'src/components/container/PageContainer';
@@ -21,43 +22,41 @@ const ExamsPage = () => {
   ];
 
   const dispatch = useDispatch();
-  // const exams = useSelector(selectExams);
-  // const status = useSelector(selectStatus);
-  // const error = useSelector(selectError);
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [examId, setExamId] = useState('');
 
   const toggle = () => {
     setOpen(!open);
   };
 
   const { data: exams, error, isLoading, refetch } = useGetExamsQuery();
-
   const [deleteExam, { isLoading: isDeleting, isError }] = useDeleteExamMutation();
-  const [examId, setExamId] = useState('');
+
+  const handleEdit = (id) => {
+    setExamId(id);
+    toggle();
+    console.log('Edit clicked for examId:', id);
+  };
 
   const handleDelete = (ids) => {
     console.log({ ids });
 
-    // Assuming deleteExam accepts a single ID
-    const deletePromises = ids.map((id) => {
-      return deleteExam(id)
-        .unwrap() // Unwrap the result to access the fulfilled value
+    const deletePromises = ids.map((id) =>
+      deleteExam(id)
+        .unwrap()
         .then((deletedExamId) => {
           console.log(`Exam with ID ${deletedExamId} deleted successfully`);
-          // Return the deleted exam ID
           return deletedExamId;
-        });
-    });
+        }),
+    );
 
-    // Wait for all delete promises to resolve
     Promise.all(deletePromises)
       .then(() => {
-        // Refetch after all exams are deleted
         refetch();
       })
       .catch((error) => {
         console.error('Failed to delete exams:', error);
-        // Handle errors if needed
       });
   };
 
@@ -81,22 +80,11 @@ const ExamsPage = () => {
     { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
   ];
 
-  const handleEdit = (id) => {
-    // Perform actions when the Edit button is clicked, passing the examId
-    setExamId(id);
-    toggle();
-    console.log('Edit clicked for examId:', id);
-    // Additional logic can be added here, e.g., navigate to the edit page with the examId
-  };
-
   if (isLoading || isDeleting) return <h1>Loading</h1>;
 
   return (
     <PageContainer title="Exams Page" description="This is the Exams Page">
       <Breadcrumb title={'Exams'} items={BCrumb} />
-      {/* <button onClick={handleDelete} disabled={isDeleting}>
-        {isLoading ? 'Deleting...' : 'Delete Exam'}
-      </button> */}
       <Box>
         <TableLayout
           headers={headers}
@@ -124,10 +112,9 @@ const ExamsPage = () => {
               <Tooltip title="View Questions">
                 <IconButton
                   size="small"
-                  // onClick={() => {
-                  //   console.log({ row });
-                  //   navigate(`/subjects/${subjectId}/questions/${row.id}`);
-                  // }}
+                  onClick={() => {
+                    navigate(`/dashboard/exam-questions/${row.id}`);
+                  }}
                 >
                   <Quiz size="1.1rem" />
                 </IconButton>
