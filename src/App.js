@@ -12,7 +12,7 @@ function App() {
   const customizer = useSelector((state) => state.customizer);
   const navigate = useNavigate();
   useEffect(() => {
-    navigate('/dashboard/exam-paper');
+    navigate('/dashboard/home');
   }, []);
 
   return (

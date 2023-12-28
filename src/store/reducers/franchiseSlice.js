@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000'; // Replace with your backend API base URL
+const API_BASE_URL = 'http://localhost:8000'; // Replace with your backend API base URL
 
 // Async thunk to fetch all franchises
 export const fetchAllFranchises = createAsyncThunk('franchises/fetchAllFranchises', async () => {

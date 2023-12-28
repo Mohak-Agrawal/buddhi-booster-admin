@@ -7,6 +7,7 @@ import FranchisePage from 'src/pages/FranchisePage';
 import LecturesPage from 'src/pages/LecturesPage';
 import QuestionsPage from 'src/pages/QuestionsPage';
 import SubjectPage from 'src/pages/SubjectPage';
+import UsersPage from 'src/pages/UsersPage';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
 
 /* ***Layouts**** */
@@ -198,7 +199,7 @@ const Router = [
       { path: '/dashboard/exams', element: <ExamPage /> },
       { path: '/dashboard/exam-questions/:examId', element: <ExamPaperPage /> },
       { path: '/dashboard/lectures', element: <LecturesPage /> },
-
+      { path: '/dashboard/users', element: <UsersPage /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
