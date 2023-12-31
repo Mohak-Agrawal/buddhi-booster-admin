@@ -1,6 +1,7 @@
 import { lazy } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
+import { useSelector } from 'react-redux';
 import ExamPaperPage from 'src/pages/ExamPaperPage';
 import ExamPage from 'src/pages/ExamsPage';
 import FranchisePage from 'src/pages/FranchisePage';
@@ -105,102 +106,104 @@ const MuiTypography = Loadable(lazy(() => import('../views/ui-components/MuiTypo
 
 // authentication
 const Login = Loadable(lazy(() => import('../pages/Login')));
-const Register = Loadable(lazy(() => import('../views/authentication/auth1/Register')));
-const Register2 = Loadable(lazy(() => import('../views/authentication/auth2/Register2')));
-const ForgotPassword = Loadable(lazy(() => import('../views/authentication/auth1/ForgotPassword')));
-const ForgotPassword2 = Loadable(
-  lazy(() => import('../views/authentication/auth2/ForgotPassword2')),
-);
-const TwoSteps = Loadable(lazy(() => import('../views/authentication/auth1/TwoSteps')));
-const TwoSteps2 = Loadable(lazy(() => import('../views/authentication/auth2/TwoSteps2')));
+
 const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Maintenance = Loadable(lazy(() => import('../views/authentication/Maintenance')));
 
-// landingpage
-const Landingpage = Loadable(lazy(() => import('../views/pages/landingpage/Landingpage')));
+const ProtectedRoutes = () => {
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const singleLogin = useSelector((state) => state.user.singleLogin);
+  return isAuthenticated || singleLogin ? <Outlet /> : <Navigate to="auth/login" />;
+};
 
 const Router = [
   {
     path: '/',
-    element: <FullLayout />,
+    element: <ProtectedRoutes />,
     children: [
-      { path: '/dashboard/home', exact: true, element: <ModernDash /> },
-      { path: '/', element: <Navigate to="/landingpage" /> },
-      { path: '/dashboards/modern', exact: true, element: <ModernDash /> },
-      { path: '/dashboards/ecommerce', exact: true, element: <EcommerceDash /> },
-      { path: '/apps/chats', element: <Chats /> },
-      { path: '/apps/notes', element: <Notes /> },
-      { path: '/apps/calendar', element: <Calendar /> },
-      { path: '/apps/email', element: <Email /> },
-      { path: '/apps/tickets', element: <Tickets /> },
-      { path: '/apps/contacts', element: <Contacts /> },
-      { path: '/apps/ecommerce/shop', element: <Ecommerce /> },
-      { path: '/apps/blog/posts', element: <Blog /> },
-      { path: '/apps/blog/detail/:id', element: <BlogDetail /> },
-      { path: '/apps/ecommerce/eco-product-list', element: <EcomProductList /> },
-      { path: '/apps/ecommerce/eco-checkout', element: <EcomProductCheckout /> },
-      { path: '/apps/ecommerce/detail/:id', element: <EcommerceDetail /> },
-      { path: '/apps/followers', element: <Followers /> },
-      { path: '/apps/friends', element: <Friends /> },
-      { path: '/apps/gallery', element: <Gallery /> },
-      { path: '/user-profile', element: <UserProfile /> },
-      { path: '/pages/casl', element: <RollbaseCASL /> },
-      { path: '/pages/treeview', element: <Treeview /> },
-      { path: '/pages/pricing', element: <Pricing /> },
-      { path: '/pages/account-settings', element: <AccountSetting /> },
-      { path: '/pages/faq', element: <Faq /> },
-      { path: '/forms/form-elements/autocomplete', element: <MuiAutoComplete /> },
-      { path: '/forms/form-elements/button', element: <MuiButton /> },
-      { path: '/forms/form-elements/checkbox', element: <MuiCheckbox /> },
-      { path: '/forms/form-elements/radio', element: <MuiRadio /> },
-      { path: '/forms/form-elements/slider', element: <MuiSlider /> },
-      { path: '/forms/form-elements/date-time', element: <MuiDateTime /> },
-      { path: '/forms/form-elements/switch', element: <MuiSwitch /> },
-      { path: '/forms/form-elements/switch', element: <MuiSwitch /> },
-      { path: '/forms/quill-editor', element: <QuillEditor /> },
-      { path: '/forms/form-layouts', element: <FormLayouts /> },
-      { path: '/forms/form-horizontal', element: <FormHorizontal /> },
-      { path: '/forms/form-vertical', element: <FormVertical /> },
-      { path: '/forms/form-custom', element: <FormCustom /> },
-      { path: '/forms/form-wizard', element: <FormWizard /> },
-      { path: '/forms/form-validation', element: <FormValidation /> },
-      { path: '/tables/basic', element: <BasicTable /> },
-      { path: '/tables/collapsible', element: <CollapsibleTable /> },
-      { path: '/tables/enhanced', element: <EnhancedTable /> },
-      { path: '/tables/fixed-header', element: <FixedHeaderTable /> },
-      { path: '/tables/pagination', element: <PaginationTable /> },
-      { path: '/tables/search', element: <SearchTable /> },
-      { path: '/charts/line-chart', element: <LineChart /> },
-      { path: '/charts/gredient-chart', element: <GredientChart /> },
-      { path: '/charts/doughnut-pie-chart', element: <DoughnutChart /> },
-      { path: '/charts/area-chart', element: <AreaChart /> },
-      { path: '/charts/column-chart', element: <ColumnChart /> },
-      { path: '/charts/candlestick-chart', element: <CandlestickChart /> },
-      { path: '/charts/radialbar-chart', element: <RadialbarChart /> },
-      { path: '/ui-components/alert', element: <MuiAlert /> },
-      { path: '/ui-components/accordion', element: <MuiAccordion /> },
-      { path: '/ui-components/avatar', element: <MuiAvatar /> },
-      { path: '/ui-components/chip', element: <MuiChip /> },
-      { path: '/ui-components/dialog', element: <MuiDialog /> },
-      { path: '/ui-components/list', element: <MuiList /> },
-      { path: '/ui-components/popover', element: <MuiPopover /> },
-      { path: '/ui-components/rating', element: <MuiRating /> },
-      { path: '/ui-components/tabs', element: <MuiTabs /> },
-      { path: '/ui-components/tooltip', element: <MuiTooltip /> },
-      { path: '/ui-components/transfer-list', element: <MuiTransferList /> },
-      { path: '/ui-components/typography', element: <MuiTypography /> },
-      { path: '/widgets/cards', element: <WidgetCards /> },
-      { path: '/widgets/banners', element: <WidgetBanners /> },
-      { path: '/widgets/charts', element: <WidgetCharts /> },
-      // -----
-      { path: '/subjects/:subjectId/*', element: <SubjectPage /> },
-      { path: '/subjects/:subjectId/questions/:categoryId', element: <QuestionsPage /> },
-      { path: '/dashboard/franchises', element: <FranchisePage /> },
-      { path: '/dashboard/exams', element: <ExamPage /> },
-      { path: '/dashboard/exam-questions/:examId', element: <ExamPaperPage /> },
-      { path: '/dashboard/lectures', element: <LecturesPage /> },
-      { path: '/dashboard/users', element: <UsersPage /> },
-      { path: '*', element: <Navigate to="/auth/404" /> },
+      {
+        path: '/',
+        element: <FullLayout />,
+        children: [
+          { path: '/dashboard/home', exact: true, element: <ModernDash /> },
+          { path: '/', element: <Navigate to="/landingpage" /> },
+          { path: '/dashboards/modern', exact: true, element: <ModernDash /> },
+          { path: '/dashboards/ecommerce', exact: true, element: <EcommerceDash /> },
+          { path: '/apps/chats', element: <Chats /> },
+          { path: '/apps/notes', element: <Notes /> },
+          { path: '/apps/calendar', element: <Calendar /> },
+          { path: '/apps/email', element: <Email /> },
+          { path: '/apps/tickets', element: <Tickets /> },
+          { path: '/apps/contacts', element: <Contacts /> },
+          { path: '/apps/ecommerce/shop', element: <Ecommerce /> },
+          { path: '/apps/blog/posts', element: <Blog /> },
+          { path: '/apps/blog/detail/:id', element: <BlogDetail /> },
+          { path: '/apps/ecommerce/eco-product-list', element: <EcomProductList /> },
+          { path: '/apps/ecommerce/eco-checkout', element: <EcomProductCheckout /> },
+          { path: '/apps/ecommerce/detail/:id', element: <EcommerceDetail /> },
+          { path: '/apps/followers', element: <Followers /> },
+          { path: '/apps/friends', element: <Friends /> },
+          { path: '/apps/gallery', element: <Gallery /> },
+          { path: '/user-profile', element: <UserProfile /> },
+          { path: '/pages/casl', element: <RollbaseCASL /> },
+          { path: '/pages/treeview', element: <Treeview /> },
+          { path: '/pages/pricing', element: <Pricing /> },
+          { path: '/pages/account-settings', element: <AccountSetting /> },
+          { path: '/pages/faq', element: <Faq /> },
+          { path: '/forms/form-elements/autocomplete', element: <MuiAutoComplete /> },
+          { path: '/forms/form-elements/button', element: <MuiButton /> },
+          { path: '/forms/form-elements/checkbox', element: <MuiCheckbox /> },
+          { path: '/forms/form-elements/radio', element: <MuiRadio /> },
+          { path: '/forms/form-elements/slider', element: <MuiSlider /> },
+          { path: '/forms/form-elements/date-time', element: <MuiDateTime /> },
+          { path: '/forms/form-elements/switch', element: <MuiSwitch /> },
+          { path: '/forms/form-elements/switch', element: <MuiSwitch /> },
+          { path: '/forms/quill-editor', element: <QuillEditor /> },
+          { path: '/forms/form-layouts', element: <FormLayouts /> },
+          { path: '/forms/form-horizontal', element: <FormHorizontal /> },
+          { path: '/forms/form-vertical', element: <FormVertical /> },
+          { path: '/forms/form-custom', element: <FormCustom /> },
+          { path: '/forms/form-wizard', element: <FormWizard /> },
+          { path: '/forms/form-validation', element: <FormValidation /> },
+          { path: '/tables/basic', element: <BasicTable /> },
+          { path: '/tables/collapsible', element: <CollapsibleTable /> },
+          { path: '/tables/enhanced', element: <EnhancedTable /> },
+          { path: '/tables/fixed-header', element: <FixedHeaderTable /> },
+          { path: '/tables/pagination', element: <PaginationTable /> },
+          { path: '/tables/search', element: <SearchTable /> },
+          { path: '/charts/line-chart', element: <LineChart /> },
+          { path: '/charts/gredient-chart', element: <GredientChart /> },
+          { path: '/charts/doughnut-pie-chart', element: <DoughnutChart /> },
+          { path: '/charts/area-chart', element: <AreaChart /> },
+          { path: '/charts/column-chart', element: <ColumnChart /> },
+          { path: '/charts/candlestick-chart', element: <CandlestickChart /> },
+          { path: '/charts/radialbar-chart', element: <RadialbarChart /> },
+          { path: '/ui-components/alert', element: <MuiAlert /> },
+          { path: '/ui-components/accordion', element: <MuiAccordion /> },
+          { path: '/ui-components/avatar', element: <MuiAvatar /> },
+          { path: '/ui-components/chip', element: <MuiChip /> },
+          { path: '/ui-components/dialog', element: <MuiDialog /> },
+          { path: '/ui-components/list', element: <MuiList /> },
+          { path: '/ui-components/popover', element: <MuiPopover /> },
+          { path: '/ui-components/rating', element: <MuiRating /> },
+          { path: '/ui-components/tabs', element: <MuiTabs /> },
+          { path: '/ui-components/tooltip', element: <MuiTooltip /> },
+          { path: '/ui-components/transfer-list', element: <MuiTransferList /> },
+          { path: '/ui-components/typography', element: <MuiTypography /> },
+          { path: '/widgets/cards', element: <WidgetCards /> },
+          { path: '/widgets/banners', element: <WidgetBanners /> },
+          { path: '/widgets/charts', element: <WidgetCharts /> },
+          // -----
+          { path: '/subjects/:subjectId/*', element: <SubjectPage /> },
+          { path: '/subjects/:subjectId/questions/:categoryId', element: <QuestionsPage /> },
+          { path: '/dashboard/franchises', element: <FranchisePage /> },
+          { path: '/dashboard/exams', element: <ExamPage /> },
+          { path: '/dashboard/exam-questions/:examId', element: <ExamPaperPage /> },
+          { path: '/dashboard/lectures', element: <LecturesPage /> },
+          { path: '/dashboard/users', element: <UsersPage /> },
+          { path: '*', element: <Navigate to="/auth/404" /> },
+        ],
+      },
     ],
   },
   {
@@ -209,15 +212,6 @@ const Router = [
     children: [
       { path: '/auth/404', element: <Error /> },
       { path: '/auth/login', element: <Login /> },
-
-      { path: '/auth/register', element: <Register /> },
-      { path: '/auth/register2', element: <Register2 /> },
-      { path: '/auth/forgot-password', element: <ForgotPassword /> },
-      { path: '/auth/forgot-password2', element: <ForgotPassword2 /> },
-      { path: '/auth/two-steps', element: <TwoSteps /> },
-      { path: '/auth/two-steps2', element: <TwoSteps2 /> },
-      { path: '/auth/maintenance', element: <Maintenance /> },
-      { path: '/landingpage', element: <Landingpage /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },

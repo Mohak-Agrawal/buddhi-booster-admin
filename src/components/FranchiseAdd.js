@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from 'react';
 import {
+  Autocomplete,
   Box,
   Button,
   Dialog,
-  DialogTitle,
-  TextField,
-  FormLabel,
   DialogContent,
   DialogContentText,
-  Grid,
-  Autocomplete,
-  MenuItem,
+  DialogTitle,
   FormControl,
+  FormLabel,
+  Grid,
   InputLabel,
+  MenuItem,
   Select,
+  TextField,
 } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from '../store/apps/contacts/ContactSlice';
-import CustomTextField from './forms/theme-elements/CustomTextField';
-import { createFranchise, updateFranchise } from 'src/store/reducers/franchiseSlice';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createFranchise, updateFranchise } from 'src/store/slices/franchiseSlice';
 
 const FranchiseAdd = ({ franchiseId }) => {
   const dispatch = useDispatch();

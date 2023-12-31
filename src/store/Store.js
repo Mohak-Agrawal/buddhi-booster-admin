@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import authApi from './api/authApi';
 import examsApi from './api/examsApi';
 import { levelsApi } from './api/levelsApi';
 import { subjectsApi } from './api/subjectsApi';
@@ -12,15 +13,17 @@ import NotesReducer from './apps/notes/NotesSlice';
 import TicketReducer from './apps/tickets/TicketSlice';
 import UserProfileReducer from './apps/userProfile/UserProfileSlice';
 import CustomizerReducer from './customizer/CustomizerSlice';
-import categorySlice from './reducers/categorySlice';
-import examSlice from './reducers/examSlice';
-import franchiseSlice from './reducers/franchiseSlice';
-import questionSlice from './reducers/questionSlice';
-import subjectSlice from './reducers/subjectSlice';
-import userSlice from './reducers/userSlice';
+import authSlice from './slices/authSlice';
+import categorySlice from './slices/categorySlice';
+import examSlice from './slices/examSlice';
+import franchiseSlice from './slices/franchiseSlice';
+import questionSlice from './slices/questionSlice';
+import subjectSlice from './slices/subjectSlice';
+import userSlice from './slices/userSlice';
 
 export const store = configureStore({
   reducer: {
+    [authApi.reducerPath]: authApi.reducer,
     [examsApi.reducerPath]: examsApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [levelsApi.reducerPath]: levelsApi.reducer,
@@ -38,12 +41,14 @@ export const store = configureStore({
     question: questionSlice,
     subjects: subjectSlice,
     franchises: franchiseSlice,
+    auth: authSlice,
     exams: examSlice,
     user: userSlice,
     subject: subjectSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
+      authApi.middleware,
       examsApi.middleware,
       userApi.middleware,
       levelsApi.middleware,

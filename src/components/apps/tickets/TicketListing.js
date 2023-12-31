@@ -1,27 +1,25 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
+  Avatar,
   Box,
+  Chip,
+  IconButton,
+  Pagination,
+  Stack,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  Typography,
-  TableBody,
-  IconButton,
-  Chip,
-  Stack,
-  Avatar,
-  Tooltip,
   TextField,
-  Pagination,
-  TableContainer,
+  Tooltip,
+  Typography,
 } from '@mui/material';
-import { fetchTickets, DeleteTicket, SearchTicket } from '../../../store/apps/tickets/TicketSlice';
 import { IconTrash } from '@tabler/icons';
-import { fetchCategories } from 'src/store/reducers/categorySlice';
-import { firestore } from 'src/utils/firebaseConfig';
-import { query, collection, onSnapshot } from 'firebase/firestore';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategories } from 'src/store/slices/categorySlice';
+import { DeleteTicket, SearchTicket, fetchTickets } from '../../../store/apps/tickets/TicketSlice';
 
 const TicketListing = () => {
   const dispatch = useDispatch();

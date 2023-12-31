@@ -9,8 +9,8 @@ import PageContainer from 'src/components/container/PageContainer';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import { useDeleteExamMutation, useGetExamsQuery } from 'src/store/api/examsApi';
 import { useGetSubjectsQuery } from 'src/store/api/subjectsApi';
-import { setExams } from 'src/store/reducers/examSlice';
-import { setSubjects } from 'src/store/reducers/subjectSlice';
+import { setExams } from 'src/store/slices/examSlice';
+import { setSubjects } from 'src/store/slices/subjectSlice';
 
 const ExamsPage = () => {
   const BCrumb = [

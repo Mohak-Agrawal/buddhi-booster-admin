@@ -8,7 +8,7 @@ import UserDialog from 'src/components/UserDialog'; // Assuming you have a UserD
 import PageContainer from 'src/components/container/PageContainer';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import { useDeleteUserMutation, useGetUsersQuery } from 'src/store/api/usersApi';
-import { setUsers } from 'src/store/reducers/userSlice';
+import { setUsers } from 'src/store/slices/userSlice';
 
 const UsersPage = () => {
   const BCrumb = [

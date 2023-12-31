@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
 import {
+  Autocomplete,
   Box,
   Button,
   Dialog,
-  DialogTitle,
-  TextField,
-  FormLabel,
   DialogContent,
   DialogContentText,
+  DialogTitle,
+  FormLabel,
   Grid,
-  Autocomplete,
+  TextField,
 } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from '../../store/apps/contacts/ContactSlice';
-import user1 from '../../assets/images/profile/user-1.jpg';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCategory } from 'src/store/slices/categorySlice';
 import CustomTextField from '../forms/theme-elements/CustomTextField';
-import { createCategory } from 'src/store/reducers/categorySlice';
 
 const CategoryAdd = ({ subjectId }) => {
   const dispatch = useDispatch();

@@ -30,7 +30,7 @@ import { IconFilter, IconSearch, IconTrash } from '@tabler/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import CategoryAdd from 'src/components/project/CategoryAdd';
 import { useGetLevelsQuery } from 'src/store/api/levelsApi';
-import { fetchCategoriesBySubjectId } from 'src/store/reducers/categorySlice';
+import { fetchCategoriesBySubjectId } from 'src/store/slices/categorySlice';
 import CustomCheckbox from '../components/forms/theme-elements/CustomCheckbox';
 import CustomSwitch from '../components/forms/theme-elements/CustomSwitch';
 

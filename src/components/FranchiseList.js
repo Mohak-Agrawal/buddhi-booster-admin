@@ -1,9 +1,9 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import { format } from 'date-fns';
 import {
   Box,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -12,29 +12,24 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  Toolbar,
-  IconButton,
-  Tooltip,
-  FormControlLabel,
-  Typography,
-  Avatar,
   TextField,
-  InputAdornment,
-  Paper,
-  Button,
+  Toolbar,
+  Tooltip,
+  Typography,
 } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import PropTypes from 'prop-types';
+import * as React from 'react';
 
 import { visuallyHidden } from '@mui/utils';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchProducts } from 'src/store/apps/eCommerce/EcommerceSlice';
+import { IconFilter, IconPencil, IconSearch, IconTrash } from '@tabler/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategoriesBySubjectId } from 'src/store/slices/categorySlice';
+import FranchiseAdd from './FranchiseAdd';
 import CustomCheckbox from './forms/theme-elements/CustomCheckbox';
 import CustomSwitch from './forms/theme-elements/CustomSwitch';
-import { IconDotsVertical, IconFilter, IconSearch, IconTrash, IconPencil } from '@tabler/icons';
-import { fetchCategories, fetchCategoriesBySubjectId } from 'src/store/reducers/categorySlice';
-import { Quiz } from '@mui/icons-material';
-import FranchiseAdd from './FranchiseAdd';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {

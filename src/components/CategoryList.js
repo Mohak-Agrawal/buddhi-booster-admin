@@ -29,7 +29,7 @@ import { Quiz } from '@mui/icons-material';
 import { IconFilter, IconSearch, IconTrash } from '@tabler/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import CategoryAdd from 'src/components/project/CategoryAdd';
-import { fetchCategoriesBySubjectId } from 'src/store/reducers/categorySlice';
+import { fetchCategoriesBySubjectId } from 'src/store/slices/categorySlice';
 import CustomCheckbox from '../../../forms/theme-elements/CustomCheckbox';
 import CustomSwitch from '../../../forms/theme-elements/CustomSwitch';
 

@@ -7,7 +7,7 @@ import PageContainer from 'src/components/container/PageContainer';
 import CsvUploadButton from 'src/components/project/CsvUploadButton';
 import QuestionView from 'src/components/project/QuesionView';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
-import { createQuestion, fetchQuestionsByCategory } from 'src/store/reducers/questionSlice';
+import { createQuestion, fetchQuestionsByCategory } from 'src/store/slices/questionSlice';
 
 const QuestionsPage = ({ match }) => {
   const [parsedQuestions, setParsedQuestions] = useState([]);
