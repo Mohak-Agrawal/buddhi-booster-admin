@@ -42,17 +42,12 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
   useEffect(() => {
     if (isEditMode && examId) {
       const exam = exams.find((exam) => exam.id === examId);
-      const subjectName = subjects.filter((subject) => subject.id == exam.subjectId);
-      console.log({ subjectName });
+
       if (exam) {
         setFormData({
-          examName: exam.examName,
-          date: exam.date,
-          duration: exam.duration,
-          subjectId: exam.subjectId,
-          examFees: exam.examFees,
-          description: exam.description || '', // Initialize with an empty string if not available
-          status: exam.status,
+          ...exam,
+          date: exam.date.split('T')[0],
+          subjectName: getSubjectName(exam.subjectId),
         });
       }
     }
@@ -66,9 +61,18 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
 
     if (field === 'date') {
       setFormData((prevData) => ({ ...prevData, [field]: value }));
+    } else if (field === 'subjectId') {
+      // Set the subject name based on the selected subject ID
+      const subjectName = getSubjectName(value);
+      setFormData((prevData) => ({ ...prevData, [field]: value, subjectName }));
     } else {
       setFormData((prevData) => ({ ...prevData, [field]: value }));
     }
+  };
+
+  const getSubjectName = (subjectId) => {
+    const selectedSubject = subjects.find((subject) => subject.id === subjectId);
+    return selectedSubject ? selectedSubject.name : '';
   };
 
   const handleSubmit = async (e) => {

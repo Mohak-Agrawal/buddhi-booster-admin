@@ -79,6 +79,12 @@ const ExamsPage = () => {
   const headers = [
     { id: 'examName', numeric: false, disablePadding: false, label: 'Exam Name' },
     { id: 'date', numeric: false, disablePadding: false, label: 'Date' },
+    {
+      id: 'subjectName',
+      numeric: false,
+      disablePadding: false,
+      label: 'Subject',
+    },
     { id: 'duration', numeric: false, disablePadding: false, label: 'Duration (hours)' },
     // {
     //   id: 'studentsRegistered',
@@ -86,12 +92,7 @@ const ExamsPage = () => {
     //   disablePadding: false,
     //   label: 'Students Registered',
     // },
-    {
-      id: 'subjectId',
-      numeric: false,
-      disablePadding: false,
-      label: 'Subject',
-    },
+
     { id: 'examFees', numeric: false, disablePadding: false, label: 'Exam Fees' },
     { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
   ];
