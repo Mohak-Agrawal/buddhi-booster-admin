@@ -11,59 +11,78 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCreateExamMutation, useUpdateExamMutation } from 'src/store/api/examsApi'; // Adjust the import path
+import { useCreateExamMutation, useUpdateExamMutation } from 'src/store/api/examsApi';
 import CustomFormLabel from './forms/theme-elements/CustomFormLabel';
 import CustomSelect from './forms/theme-elements/CustomSelect';
 import CustomTextField from './forms/theme-elements/CustomTextField';
 
 const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
-  console.log({ examId });
   const dispatch = useDispatch();
-  const states = useSelector((state) => state);
   const exams = useSelector((state) => state.exams.exams);
+  const subjects = useSelector((state) => state.subject.subjects);
+  console.log('state', subjects);
 
-  const [createExamMutation] = useCreateExamMutation(); // Mutation hook for creating an exam
-  const [updateExamMutation] = useUpdateExamMutation(); // Mutation hook for updating an exam
+  const [createExamMutation] = useCreateExamMutation();
+  const [updateExamMutation] = useUpdateExamMutation();
 
   const isEditMode = !!examId;
 
   const initialFormData = {
     examName: '',
-    date: '',
+    date: new Date().toISOString().split('T')[0], // Initialize with the current date
     duration: '',
-    studentsRegistered: '',
+    subjectId: '',
     examFees: '',
+    description: '', // Add the description field
     status: 'Active',
   };
+
   const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     if (isEditMode && examId) {
       const exam = exams.find((exam) => exam.id === examId);
+      const subjectName = subjects.filter((subject) => subject.id == exam.subjectId);
+      console.log({ subjectName });
       if (exam) {
         setFormData({
           examName: exam.examName,
           date: exam.date,
           duration: exam.duration,
-          studentsRegistered: exam.studentsRegistered,
+          subjectId: exam.subjectId,
           examFees: exam.examFees,
+          description: exam.description || '', // Initialize with an empty string if not available
           status: exam.status,
         });
       }
     }
   }, [isEditMode, examId, exams]);
 
+  const handleChange = (field, value) => {
+    // Ensure only integer values are allowed for the 'duration' field
+    if (field === 'duration' && !Number.isInteger(Number(value))) {
+      return;
+    }
+
+    if (field === 'date') {
+      setFormData((prevData) => ({ ...prevData, [field]: value }));
+    } else {
+      setFormData((prevData) => ({ ...prevData, [field]: value }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Dispatch the action based on isEditMode
+    console.log({ formData });
+
     if (isEditMode) {
       await updateExamMutation({ examId, updatedExamData: formData });
     } else {
       await createExamMutation(formData);
     }
     refetch();
-    toggle(); // Close the dialog
+    toggle();
   };
 
   return (
@@ -96,39 +115,54 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
                   variant="outlined"
                   fullWidth
                   value={formData.examName}
-                  onChange={(e) => setFormData({ ...formData, examName: e.target.value })}
+                  onChange={(e) => handleChange('examName', e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
                 <CustomFormLabel htmlFor="fs-date" sx={{ mt: 0 }}>
                   Exam Date
                 </CustomFormLabel>
-                <CustomTextField type="date" id="fs-date" placeholder="John Deo" fullWidth />
+                <CustomTextField
+                  type="date"
+                  id="fs-date"
+                  fullWidth
+                  value={formData.date}
+                  onChange={(e) => handleChange('date', e.target.value)}
+                />
               </Grid>
 
               <Grid item xs={12} lg={6}>
                 <CustomFormLabel htmlFor="duration" sx={{ mt: 0 }}>
-                  Duration
+                  Duration (hours)
                 </CustomFormLabel>
                 <CustomTextField
                   id="duration"
                   variant="outlined"
                   fullWidth
+                  type="number"
                   value={formData.duration}
-                  onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                  onChange={(e) => handleChange('duration', e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
-                <CustomFormLabel htmlFor="studentsRegistered" sx={{ mt: 0 }}>
-                  Students Registered
+                <CustomFormLabel htmlFor="status" sx={{ mt: 0 }}>
+                  Subject
                 </CustomFormLabel>
-                <CustomTextField
-                  id="studentsRegistered"
-                  variant="outlined"
-                  fullWidth
-                  value={formData.studentsRegistered}
-                  onChange={(e) => setFormData({ ...formData, studentsRegistered: e.target.value })}
-                />
+                <FormControl fullWidth variant="outlined">
+                  <CustomSelect
+                    id="subjectId"
+                    value={formData.subjectId}
+                    onChange={(e) => handleChange('subjectId', e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                  >
+                    {subjects.map((item, index) => (
+                      <MenuItem value={item.id} key={index}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </CustomSelect>
+                </FormControl>
               </Grid>
               <Grid item xs={12} lg={12}>
                 <CustomFormLabel htmlFor="description" sx={{ mt: 0 }}>
@@ -140,7 +174,7 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
                   fullWidth
                   multiline
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) => handleChange('description', e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
@@ -152,7 +186,7 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
                   variant="outlined"
                   fullWidth
                   value={formData.examFees}
-                  onChange={(e) => setFormData({ ...formData, examFees: e.target.value })}
+                  onChange={(e) => handleChange('examFees', e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
@@ -163,7 +197,7 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
                   <CustomSelect
                     id="status"
                     value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                    onChange={(e) => handleChange('status', e.target.value)}
                     fullWidth
                     variant="outlined"
                   >

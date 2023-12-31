@@ -8,7 +8,9 @@ import TableLayout from 'src/components/TableLayout';
 import PageContainer from 'src/components/container/PageContainer';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import { useDeleteExamMutation, useGetExamsQuery } from 'src/store/api/examsApi';
+import { useGetSubjectsQuery } from 'src/store/api/subjectsApi';
 import { setExams } from 'src/store/reducers/examSlice';
+import { setSubjects } from 'src/store/reducers/subjectSlice';
 
 const ExamsPage = () => {
   const BCrumb = [
@@ -31,6 +33,7 @@ const ExamsPage = () => {
   };
 
   const { data: exams, error, isLoading, refetch } = useGetExamsQuery();
+  const { data: subjects, error: subjectError, isLoading: subjectLoading } = useGetSubjectsQuery();
   const [deleteExam, { isLoading: isDeleting, isError }] = useDeleteExamMutation();
 
   const handleEdit = (id) => {
@@ -61,6 +64,13 @@ const ExamsPage = () => {
   };
 
   useEffect(() => {
+    if (subjects) {
+      console.log({ subjects });
+      dispatch(setSubjects(subjects));
+    }
+  }, [dispatch, exams]);
+
+  useEffect(() => {
     if (exams) {
       dispatch(setExams(exams));
     }
@@ -69,12 +79,18 @@ const ExamsPage = () => {
   const headers = [
     { id: 'examName', numeric: false, disablePadding: false, label: 'Exam Name' },
     { id: 'date', numeric: false, disablePadding: false, label: 'Date' },
-    { id: 'duration', numeric: false, disablePadding: false, label: 'Duration' },
+    { id: 'duration', numeric: false, disablePadding: false, label: 'Duration (hours)' },
+    // {
+    //   id: 'studentsRegistered',
+    //   numeric: false,
+    //   disablePadding: false,
+    //   label: 'Students Registered',
+    // },
     {
-      id: 'studentsRegistered',
+      id: 'subjectId',
       numeric: false,
       disablePadding: false,
-      label: 'Students Registered',
+      label: 'Subject',
     },
     { id: 'examFees', numeric: false, disablePadding: false, label: 'Exam Fees' },
     { id: 'status', numeric: false, disablePadding: false, label: 'Status' },

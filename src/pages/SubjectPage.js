@@ -1,18 +1,22 @@
-import * as React from 'react';
-
+// SubjectPage.js
 import { Box } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import PageContainer from 'src/components/container/PageContainer';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import CategoryPage from 'src/pages/CategoryPage';
-import { fetchSubjectById } from 'src/store/reducers/subjectSlice';
+import { useGetSubjectByIdQuery } from 'src/store/api/subjectsApi';
 
 const SubjectPage = () => {
   const dispatch = useDispatch();
-  const { subjectId, categoryId } = useParams();
-  const currentSubject = useSelector((state) => state?.subjects?.subject);
-  console.log({ currentSubject });
+  const { subjectId } = useParams();
+  const {
+    data: currentSubject,
+    isLoading,
+    refetch,
+    isFetching,
+  } = useGetSubjectByIdQuery(subjectId);
 
   const BCrumb = [
     {
@@ -24,11 +28,11 @@ const SubjectPage = () => {
     },
   ];
 
-  React.useEffect(() => {
-    // Fetch the subject when the component mounts
+  useEffect(() => {
+    refetch();
+  }, [subjectId]);
 
-    dispatch(fetchSubjectById(subjectId));
-  }, [dispatch, subjectId]);
+  if (isLoading || isFetching) return <h1>Loading</h1>;
 
   return (
     <PageContainer title="Search Table" description="this is Search Table page">

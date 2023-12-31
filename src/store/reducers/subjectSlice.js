@@ -1,40 +1,57 @@
-// subjectSlice.js
-
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios'; // Assuming you're using Axios
+// import { subjectsApi } from '../api/subjectsApi';
 
-const API_BASE_URL = 'http://localhost:8000';
-
-const initialState = {
-  subject: null,
-};
-
-export const subjectSlice = createSlice({
-  name: 'subject',
-  initialState,
+// Slice for subjects
+const subjectsSlice = createSlice({
+  name: 'subjects',
+  initialState: {
+    subjects: [],
+    isLoading: false,
+    error: null,
+  },
   reducers: {
-    setSubject: (state, action) => {
-      state.subject = action.payload;
+    setSubjects: (state, action) => {
+      state.subjects = action.payload;
+    },
+    addSubject: (state, action) => {
+      state.subjects.push(action.payload);
+    },
+    updateSubject: (state, action) => {
+      const { id, updatedSubject } = action.payload;
+      const index = state.subjects.findIndex((subject) => subject.id === id);
+      if (index !== -1) {
+        state.subjects[index] = updatedSubject;
+      }
+    },
+    deleteSubject: (state, action) => {
+      const idToDelete = action.payload;
+      state.subjects = state.subjects.filter((subject) => subject.id !== idToDelete);
     },
   },
+  // extraReducers: (builder) => {
+  //   builder
+  //     .addCase(subjectsApi.endpoints.getSubjects.pending, (state) => {
+  //       state.isLoading = true;
+  //       state.error = null;
+  //     })
+  //     .addCase(subjectsApi.endpoints.getSubjects.fulfilled, (state, action) => {
+  //       state.isLoading = false;
+  //       state.subjects = action.payload;
+  //     })
+  //     .addCase(subjectsApi.endpoints.getSubjects.rejected, (state, action) => {
+  //       state.isLoading = false;
+  //       state.error = action.error.message;
+  //     });
+  // },
 });
 
-export const { setSubject } = subjectSlice.actions;
+// Export selectors for use in components
+export const selectSubjects = (state) => state.subjectsApi.subjects;
+export const selectSubjectsLoading = (state) => state.subjectsApi.isLoading;
+export const selectSubjectsError = (state) => state.subjectsApi.error;
 
-// Async thunk to fetch a subject by ID from the backend
-export const fetchSubjectById = (id) => async (dispatch) => {
-  try {
-    const apiUrl = `${API_BASE_URL}/subjects/${id}`;
-    const response = await axios.get(apiUrl); // Adjust the endpoint
-    const data = response.data;
+// Export actions
+export const { setSubjects, addSubject, updateSubject, deleteSubject } = subjectsSlice.actions;
 
-    dispatch(setSubject(data));
-  } catch (error) {
-    console.error(error);
-    // Handle errors as needed
-  }
-};
-
-// Selectors
-
-export default subjectSlice.reducer;
+// Export the reducer
+export default subjectsSlice.reducer;

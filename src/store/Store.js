@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import examsApi from './api/examsApi';
 import { levelsApi } from './api/levelsApi';
+import { subjectsApi } from './api/subjectsApi';
 import userApi from './api/usersApi';
 import BlogReducer from './apps/blog/BlogSlice';
 import ChatsReducer from './apps/chat/ChatSlice';
@@ -23,6 +24,7 @@ export const store = configureStore({
     [examsApi.reducerPath]: examsApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [levelsApi.reducerPath]: levelsApi.reducer,
+    [subjectsApi.reducerPath]: subjectsApi.reducer,
     customizer: CustomizerReducer,
     chatReducer: ChatsReducer,
     emailReducer: EmailReducer,
@@ -38,7 +40,13 @@ export const store = configureStore({
     franchises: franchiseSlice,
     exams: examSlice,
     user: userSlice,
+    subject: subjectSlice,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(examsApi.middleware, userApi.middleware, levelsApi.middleware),
+    getDefaultMiddleware().concat(
+      examsApi.middleware,
+      userApi.middleware,
+      levelsApi.middleware,
+      subjectsApi.middleware,
+    ),
 });
