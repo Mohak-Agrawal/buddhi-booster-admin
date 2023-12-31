@@ -6,16 +6,15 @@ import {
   DialogContentText,
   DialogTitle,
   FormControl,
-  FormLabel,
   Grid,
-  InputLabel,
   MenuItem,
-  Select,
-  TextField,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCreateExamMutation, useUpdateExamMutation } from 'src/store/api/examsApi'; // Adjust the import path
+import CustomFormLabel from './forms/theme-elements/CustomFormLabel';
+import CustomSelect from './forms/theme-elements/CustomSelect';
+import CustomTextField from './forms/theme-elements/CustomTextField';
 
 const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
   console.log({ examId });
@@ -89,10 +88,11 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
           <form onSubmit={handleSubmit}>
             <Grid spacing={3} container>
               <Grid item xs={12} lg={6}>
-                <FormLabel>Exam Name</FormLabel>
-                <TextField
+                <CustomFormLabel htmlFor="examName" sx={{ mt: 0 }}>
+                  Exam Name
+                </CustomFormLabel>
+                <CustomTextField
                   id="examName"
-                  size="small"
                   variant="outlined"
                   fullWidth
                   value={formData.examName}
@@ -100,21 +100,18 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
-                <FormLabel>Date</FormLabel>
-                <TextField
-                  id="date"
-                  size="small"
-                  variant="outlined"
-                  fullWidth
-                  value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                />
+                <CustomFormLabel htmlFor="fs-date" sx={{ mt: 0 }}>
+                  Exam Date
+                </CustomFormLabel>
+                <CustomTextField type="date" id="fs-date" placeholder="John Deo" fullWidth />
               </Grid>
+
               <Grid item xs={12} lg={6}>
-                <FormLabel>Duration</FormLabel>
-                <TextField
+                <CustomFormLabel htmlFor="duration" sx={{ mt: 0 }}>
+                  Duration
+                </CustomFormLabel>
+                <CustomTextField
                   id="duration"
-                  size="small"
                   variant="outlined"
                   fullWidth
                   value={formData.duration}
@@ -122,21 +119,36 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
-                <FormLabel>Students Registered</FormLabel>
-                <TextField
+                <CustomFormLabel htmlFor="studentsRegistered" sx={{ mt: 0 }}>
+                  Students Registered
+                </CustomFormLabel>
+                <CustomTextField
                   id="studentsRegistered"
-                  size="small"
                   variant="outlined"
                   fullWidth
                   value={formData.studentsRegistered}
                   onChange={(e) => setFormData({ ...formData, studentsRegistered: e.target.value })}
                 />
               </Grid>
+              <Grid item xs={12} lg={12}>
+                <CustomFormLabel htmlFor="description" sx={{ mt: 0 }}>
+                  Description
+                </CustomFormLabel>
+                <CustomTextField
+                  id="description"
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                />
+              </Grid>
               <Grid item xs={12} lg={6}>
-                <FormLabel>Exam Fees</FormLabel>
-                <TextField
+                <CustomFormLabel htmlFor="examFees" sx={{ mt: 0 }}>
+                  Exam Fees
+                </CustomFormLabel>
+                <CustomTextField
                   id="examFees"
-                  size="small"
                   variant="outlined"
                   fullWidth
                   value={formData.examFees}
@@ -144,19 +156,20 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
-                <FormLabel>Status</FormLabel>
-                <FormControl fullWidth size="small" variant="outlined">
-                  <InputLabel id="status-label">Select Status</InputLabel>
-                  <Select
-                    labelId="status-label"
+                <CustomFormLabel htmlFor="status" sx={{ mt: 0 }}>
+                  Status
+                </CustomFormLabel>
+                <FormControl fullWidth variant="outlined">
+                  <CustomSelect
                     id="status"
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    label="Select Status"
+                    fullWidth
+                    variant="outlined"
                   >
                     <MenuItem value="Active">Active</MenuItem>
                     <MenuItem value="Inactive">Inactive</MenuItem>
-                  </Select>
+                  </CustomSelect>
                 </FormControl>
               </Grid>
               <Grid item xs={12} lg={12}>

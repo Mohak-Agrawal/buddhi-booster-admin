@@ -29,6 +29,7 @@ import { Quiz } from '@mui/icons-material';
 import { IconFilter, IconSearch, IconTrash } from '@tabler/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import CategoryAdd from 'src/components/project/CategoryAdd';
+import { useGetLevelsQuery } from 'src/store/api/levelsApi';
 import { fetchCategoriesBySubjectId } from 'src/store/reducers/categorySlice';
 import CustomCheckbox from '../components/forms/theme-elements/CustomCheckbox';
 import CustomSwitch from '../components/forms/theme-elements/CustomSwitch';
@@ -230,6 +231,9 @@ const CategoryPage = (props) => {
 
   const dispatch = useDispatch();
   const currentCategories = useSelector((state) => state?.category?.categories);
+  const { data: levels, error, isLoading } = useGetLevelsQuery();
+  console.log('levels Data:', levels);
+
   console.log({ currentCategories });
   //Fetch Products
   React.useEffect(() => {
