@@ -1,13 +1,13 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import Loadable from '../layouts/full/shared/loadable/Loadable';
 import QuestionsPage from 'src/pages/QuestionsPage';
 import SubjectPage from 'src/pages/SubjectPage';
+import Loadable from '../layouts/full/shared/loadable/Loadable';
 
 /* ***Layouts**** */
-const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
-const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')));
+const FullLayout = Loadable(lazy(() => import('../layouts/FullLayout')));
+const BlankLayout = Loadable(lazy(() => import('../layouts/BlankLayout')));
 
 /* ****Pages***** */
 const ModernDash = Loadable(lazy(() => import('../views/dashboard/Modern')));

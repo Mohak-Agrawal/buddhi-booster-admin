@@ -1,9 +1,9 @@
-import { styled, Container, Box, useTheme } from '@mui/material';
+import { Box, Container, styled, useTheme } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import Header from './vertical/header/Header';
-import Sidebar from './vertical/sidebar/Sidebar';
-import Customizer from './shared/customizer/Customizer';
+import Customizer from './full/shared/customizer/Customizer';
+import Header from './full/vertical/header/Header';
+import Sidebar from './full/vertical/sidebar/Sidebar';
 
 const MainWrapper = styled('div')(() => ({
   display: 'flex',
