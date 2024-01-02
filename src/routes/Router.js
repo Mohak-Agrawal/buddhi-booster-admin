@@ -111,9 +111,10 @@ const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Maintenance = Loadable(lazy(() => import('../views/authentication/Maintenance')));
 
 const ProtectedRoutes = () => {
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const singleLogin = useSelector((state) => state.user.singleLogin);
-  return isAuthenticated || singleLogin ? <Outlet /> : <Navigate to="auth/login" />;
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const singleLogin = useSelector((state) => state.auth.singleLogin);
+  console.log({ isAuthenticated });
+  return isAuthenticated || singleLogin ? <Outlet /> : <Navigate to="/auth/login" />;
 };
 
 const Router = [

@@ -1,42 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
-  isLoading: false,
-  error: null,
-};
-
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: {
+    isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+    user: JSON.parse(localStorage.getItem('user')) || {}, // Parse user data from localStorage
+    singleLogin: false,
+  },
   reducers: {
-    // Action to set user data after successful login
-    setUser: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+    loginUser: (state, action) => {
+      const { user } = action.payload;
       state.isAuthenticated = true;
+      state.user = user; // Set user data
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('user', JSON.stringify(user)); // Store user data in localStorage
     },
-    // Action to handle loading state
-    setLoading: (state, action) => {
-      state.isLoading = action.payload;
-    },
-    // Action to handle login error
-    setError: (state, action) => {
-      state.error = action.payload;
-    },
-    // Action to clear the auth state
-    clearAuthState: (state) => {
-      state.user = null;
-      state.token = null;
+    logout: (state) => {
       state.isAuthenticated = false;
-      state.isLoading = false;
-      state.error = null;
+
+      state.user = {}; // Clear user data on logout
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('user'); // Remove user data from localStorage
+    },
+    singleLogin: (state, action) => {
+      state.singleLogin = action.payload;
     },
   },
 });
 
-export const { setUser, setLoading, setError, clearAuthState } = authSlice.actions;
+export const { loginUser, logout, singleLogin } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -27,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import { IconFilter, IconPencil, IconSearch, IconTrash } from '@tabler/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategoriesBySubjectId } from 'src/store/slices/categorySlice';
-import FranchiseAdd from './FranchiseAdd';
+import FranchiseDialog from './FranchiseDialog';
 import CustomCheckbox from './forms/theme-elements/CustomCheckbox';
 import CustomSwitch from './forms/theme-elements/CustomSwitch';
 
@@ -196,7 +196,7 @@ const EnhancedTableToolbar = (props) => {
             value={search}
           />
           <div>
-            <FranchiseAdd
+            <FranchiseDialog
             // subjectId={props?.subjectId}
             // open={open}
             // setOpen={setOpen}
