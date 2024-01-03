@@ -196,6 +196,7 @@ const FranchiseDialog = ({ franchiseId, open, setOpen, toggle, refetch }) => {
                   id="address"
                   variant="outlined"
                   fullWidth
+                  multiline
                   value={formData.address}
                   onChange={(e) => handleChange('address', e.target.value)}
                 />

@@ -7,7 +7,9 @@ import TableLayout from 'src/components/TableLayout';
 import UserDialog from 'src/components/UserDialog'; // Assuming you have a UserDialog component
 import PageContainer from 'src/components/container/PageContainer';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
+import { useGetFranchisesQuery } from 'src/store/api/franchisesApi';
 import { useDeleteUserMutation, useGetUsersQuery } from 'src/store/api/usersApi';
+import { setFranchises } from 'src/store/slices/franchiseSlice';
 import { setUsers } from 'src/store/slices/userSlice';
 
 const UsersPage = () => {
@@ -31,6 +33,12 @@ const UsersPage = () => {
   };
 
   const { data: users, error, isLoading, refetch } = useGetUsersQuery();
+  const {
+    data: franchises,
+    error: franchiseError,
+    isLoading: isFranchiseLoading,
+  } = useGetFranchisesQuery();
+
   const [deleteUser, { isLoading: isDeleting, isError }] = useDeleteUserMutation();
 
   const handleEdit = (id) => {
@@ -61,6 +69,12 @@ const UsersPage = () => {
   };
 
   useEffect(() => {
+    if (franchises) {
+      dispatch(setFranchises(franchises));
+    }
+  }, [dispatch, franchises]);
+
+  useEffect(() => {
     if (users) {
       dispatch(setUsers(users));
     }
@@ -72,7 +86,7 @@ const UsersPage = () => {
     // Add other user attributes as needed
   ];
 
-  if (isLoading || isDeleting) return <h1>Loading</h1>;
+  if (isLoading || isDeleting || isFranchiseLoading) return <h1>Loading</h1>;
 
   return (
     <PageContainer title="Users" description="This is the Users Page">

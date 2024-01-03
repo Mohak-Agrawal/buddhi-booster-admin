@@ -1,12 +1,12 @@
-import React from 'react';
-import Menuitems from './MenuItems';
-import { useLocation } from 'react-router';
 import { Box, List, useMediaQuery } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
 import { toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
-import NavItem from './NavItem';
+import AdminMenuItems from './AdminMenuItems';
+import FranchiseMenuItems from './FranchiseMenuItems';
 import NavCollapse from './NavCollapse';
 import NavGroup from './NavGroup/NavGroup';
+import NavItem from './NavItem';
 
 const SidebarItems = () => {
   const { pathname } = useLocation();
@@ -16,11 +16,13 @@ const SidebarItems = () => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const hideMenu = lgUp ? customizer.isCollapse && !customizer.isSidebarHover : '';
   const dispatch = useDispatch();
+  const { role } = useSelector((state) => state.auth.user);
+  console.log({ role });
 
   return (
     <Box sx={{ px: 3 }}>
       <List sx={{ pt: 0 }} className="sidebarNav">
-        {Menuitems.map((item, index) => {
+        {(role == 'franchise' ? FranchiseMenuItems : AdminMenuItems).map((item, index) => {
           // {/********SubHeader**********/}
           if (item.subheader) {
             return <NavGroup item={item} hideMenu={hideMenu} key={item.subheader} />;

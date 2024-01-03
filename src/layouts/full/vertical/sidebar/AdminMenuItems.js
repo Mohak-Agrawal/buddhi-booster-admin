@@ -2,7 +2,7 @@ import { IconAperture, IconChartDonut3, IconPoint } from '@tabler/icons';
 
 import { uniqueId } from 'lodash';
 
-const Menuitems = [
+const AdminMenuItems = [
   {
     navlabel: true,
     subheader: 'Home',
@@ -75,4 +75,4 @@ const Menuitems = [
   },
 ];
 
-export default Menuitems;
+export default AdminMenuItems;

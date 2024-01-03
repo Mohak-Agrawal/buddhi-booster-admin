@@ -44,12 +44,12 @@ function getComparator(order, orderBy) {
 
 function stableSort(array, comparator) {
   const stabilizedThis = array?.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis?.map((el) => el[0]);
 }
 
 const EnhancedTableHead = ({
@@ -79,7 +79,7 @@ const EnhancedTableHead = ({
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
+        {headCells?.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
@@ -219,7 +219,7 @@ const TableLayout = ({
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.id);
+      const newSelecteds = rows?.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -233,13 +233,13 @@ const TableLayout = ({
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
+      newSelected = newSelected.concat(selected?.slice(1));
     } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
+      newSelected = newSelected.concat(selected?.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected?.slice(0, selectedIndex),
+        selected?.slice(selectedIndex + 1),
       );
     }
 
@@ -294,7 +294,7 @@ const TableLayout = ({
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;

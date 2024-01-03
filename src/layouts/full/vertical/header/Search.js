@@ -1,20 +1,20 @@
-import { useState } from 'react';
 import {
-  IconButton,
+  Box,
   Dialog,
   DialogContent,
-  Stack,
   Divider,
-  Box,
+  IconButton,
   List,
   ListItemButton,
   ListItemText,
+  Stack,
   Typography,
 } from '@mui/material';
 import { IconSearch, IconX } from '@tabler/icons';
-import Menuitems from '../sidebar/MenuItems';
-import CustomTextField from 'src/components/forms/theme-elements/CustomTextField';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import CustomTextField from 'src/components/forms/theme-elements/CustomTextField';
+import Menuitems from '../sidebar/AdminMenuItems';
 
 const Search = () => {
   // drawer top

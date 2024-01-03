@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import logo from 'src/assets/images/logos/logo.png';
 import Scrollbar from 'src/components/custom-scroll/Scrollbar';
 import { hoverSidebar, toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
-import Logo from '../../shared/logo/Logo';
 import SidebarItems from './SidebarItems';
 import { Profile } from './SidebarProfile/Profile';
 
@@ -114,15 +113,14 @@ const Sidebar = () => {
         },
       }}
     >
-      {/* ------------------------------------------- */}
-      {/* Logo */}
-      {/* ------------------------------------------- */}
-      <Box px={2}>
-        <Logo />
+      <Box
+        px={3}
+        pt={2}
+        pb={1}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <img src={logo} style={{ width: '75%' }} />
       </Box>
-      {/* ------------------------------------------- */}
-      {/* Sidebar For Mobile */}
-      {/* ------------------------------------------- */}
       <SidebarItems />
     </Drawer>
   );
