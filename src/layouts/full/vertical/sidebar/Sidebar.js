@@ -1,8 +1,11 @@
 import { Box, Drawer, useMediaQuery, useTheme } from '@mui/material';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import logo from 'src/assets/images/logos/logo.png';
 import Scrollbar from 'src/components/custom-scroll/Scrollbar';
+import { useGetSubjectsQuery } from 'src/store/api/subjectsApi';
 import { hoverSidebar, toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
+import { setSubjects } from 'src/store/slices/subjectSlice';
 import SidebarItems from './SidebarItems';
 import { Profile } from './SidebarProfile/Profile';
 
@@ -11,6 +14,15 @@ const Sidebar = () => {
   const customizer = useSelector((state) => state.customizer);
   const dispatch = useDispatch();
   const theme = useTheme();
+
+  const { data: subjects, error, isLoading, refetch } = useGetSubjectsQuery();
+
+  useEffect(() => {
+    if (subjects) {
+      dispatch(setSubjects(subjects));
+    }
+  }, [dispatch, subjects]);
+
   const toggleWidth =
     customizer.isCollapse && !customizer.isSidebarHover
       ? customizer.MiniSidebarWidth

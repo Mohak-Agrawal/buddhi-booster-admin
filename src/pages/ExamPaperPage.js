@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Papa from 'papaparse';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -18,7 +18,11 @@ const ExamPaperPage = () => {
 
   const [parsedQuestions, setParsedQuestions] = useState([]);
   const dispatch = useDispatch();
-  const { data: allQuestions, isLoading } = useGetQuestionsForExamQuery(examId);
+  const {
+    data: allQuestions,
+    isLoading,
+    refetch: refetchQuestions,
+  } = useGetQuestionsForExamQuery(examId);
   const { data: examDetails, isLoading: examDetailsLoading, refetch } = useGetExamByIdQuery(examId);
   console.log({ examDetails });
   const { examName } = examDetails ?? {};
@@ -50,8 +54,8 @@ const ExamPaperPage = () => {
     { id: 'correctAnswer', numeric: false, disablePadding: false, label: 'Correct Answer' },
   ];
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
+  const handleFileUpload = (file) => {
+    // Ensure that event and event.target are defined
 
     if (file) {
       Papa.parse(file, {
@@ -63,11 +67,10 @@ const ExamPaperPage = () => {
             option2: String(row[2]),
             option3: String(row[3]),
             option4: String(row[4]),
-            // options: row.slice(1, 5),
             correctAnswer: String(row[row.length - 1]),
           }));
 
-          console.log(parsedData);
+          console.log('parsedData', parsedData);
           setParsedQuestions(parsedData);
         },
         dynamicTyping: false,
@@ -106,6 +109,7 @@ const ExamPaperPage = () => {
         questions: questions,
       }).unwrap();
       console.log('Questions created successfully:', result);
+      refetchQuestions();
       // Do something with the result, e.g., refetch the list of exams
     } catch (error) {
       console.error('Error creating questions:', error);
@@ -137,13 +141,13 @@ const ExamPaperPage = () => {
           navigate={(path) => console.log('Navigate to:', path)}
           handleDelete={handleDelete}
           // renderActionItems={(row) => <></>}
-          // renderButton={
-          //   <Box>
-          //     <Button color="primary" variant="contained" fullWidth onClick={toggle}>
-          //       Add New Exam
-          //     </Button>
-          //   </Box>
-          // }
+          renderButton={
+            <Box>
+              <Button color="primary" variant="contained" fullWidth>
+                Download CSV Template
+              </Button>
+            </Box>
+          }
         />
       </Box>
     </PageContainer>

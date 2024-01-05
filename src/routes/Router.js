@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
+import UserDetailsPage from 'src/pages/UserDetailsPage';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
 
 /* ***Layouts**** */
@@ -39,12 +40,13 @@ const Router = [
         children: [
           { path: '/dashboard/home', exact: true, element: <ModernDash /> },
           { path: '/subjects/:subjectId/*', element: <SubjectPage /> },
-          { path: '/subjects/:subjectId/questions/:categoryId', element: <QuestionsPage /> },
+          { path: '/dashboard/category-questions/:categoryId', element: <QuestionsPage /> },
           { path: '/dashboard/franchises', element: <FranchisePage /> },
           { path: '/dashboard/exams', element: <ExamPage /> },
           { path: '/dashboard/exam-questions/:examId', element: <ExamPaperPage /> },
           { path: '/dashboard/lectures', element: <LecturesPage /> },
           { path: '/dashboard/users', element: <UsersPage /> },
+          { path: '/dashboard/userDetails/:userId', element: <UserDetailsPage /> },
           { path: '*', element: <Navigate to="/auth/404" /> },
         ],
       },

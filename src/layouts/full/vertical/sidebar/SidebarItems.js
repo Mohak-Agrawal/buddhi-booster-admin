@@ -1,8 +1,9 @@
 import { Box, List, useMediaQuery } from '@mui/material';
+import { IconAperture, IconChartDonut3, IconPoint } from '@tabler/icons';
+import { uniqueId } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import { toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
-import AdminMenuItems from './AdminMenuItems';
 import FranchiseMenuItems from './FranchiseMenuItems';
 import NavCollapse from './NavCollapse';
 import NavGroup from './NavGroup/NavGroup';
@@ -17,7 +18,73 @@ const SidebarItems = () => {
   const hideMenu = lgUp ? customizer.isCollapse && !customizer.isSidebarHover : '';
   const dispatch = useDispatch();
   const { role } = useSelector((state) => state.auth.user);
-  console.log({ role });
+  const { subjects } = useSelector((state) => state.subjects);
+  console.log({ subjects });
+
+  const AdminMenuItems = [
+    {
+      navlabel: true,
+      subheader: 'Home',
+    },
+    {
+      id: uniqueId(),
+      title: 'Home',
+      icon: IconAperture,
+      href: '/dashboard/home',
+      chipColor: 'secondary',
+    },
+
+    {
+      navlabel: true,
+      subheader: 'Content',
+    },
+    {
+      id: uniqueId(),
+      title: 'Subjects',
+      icon: IconChartDonut3,
+      href: '/',
+      children: subjects.map((item, index) => ({
+        id: item.id,
+        title: item.name, // Assuming the subject has a 'name' property
+        icon: IconPoint,
+        href: `/subjects/${item.id}`, // Assuming each subject has an 'id' property
+      })),
+    },
+    {
+      id: uniqueId(),
+      title: 'Exams',
+      icon: IconAperture,
+      href: '/dashboard/exams',
+    },
+    // {
+    //   id: uniqueId(),
+    //   title: 'Questions',
+    //   icon: IconAperture,
+    //   href: '/dashboard/questions',
+    // },
+    {
+      id: uniqueId(),
+      title: 'Lectures',
+      icon: IconAperture,
+      href: '/dashboard/lectures',
+    },
+    {
+      navlabel: true,
+      subheader: 'Management',
+    },
+    {
+      id: uniqueId(),
+      title: 'Users',
+      icon: IconAperture,
+      href: '/dashboard/users',
+    },
+    {
+      id: uniqueId(),
+      title: 'Franchises',
+      icon: IconAperture,
+      href: '/dashboard/franchises',
+    },
+  ];
 
   return (
     <Box sx={{ px: 3 }}>

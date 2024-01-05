@@ -40,16 +40,15 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
   const isEditMode = !!userId;
 
   const initialFormData = {
-    userName: '',
+    fullName: '',
     email: '',
     phoneNumber: '',
-    designation: '',
     franchiseId: matchedFranchise?.id,
     secondaryNumber: '',
     city: '',
     state: '',
     country: '',
-    pinCode: '',
+    pincode: '',
     address: '',
     password: '',
     userStatus: 'Active',
@@ -110,15 +109,16 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
           <form onSubmit={handleSubmit}>
             <Grid spacing={3} container>
               <Grid item xs={12} lg={6}>
-                <CustomFormLabel htmlFor="userName" sx={{ mt: 0 }}>
-                  User Name
+                <CustomFormLabel htmlFor="fullName" sx={{ mt: 0 }}>
+                  Full Name *
                 </CustomFormLabel>
                 <CustomTextField
-                  id="userName"
+                  id="fullName"
                   variant="outlined"
                   fullWidth
-                  value={formData.userName}
-                  onChange={(e) => handleChange('userName', e.target.value)}
+                  value={formData.fullName}
+                  onChange={(e) => handleChange('fullName', e.target.value)}
+                  required
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
@@ -156,19 +156,6 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
                   type="password"
                   value={formData.password}
                   onChange={(e) => handleChange('password', e.target.value)}
-                />
-              </Grid>
-
-              <Grid item xs={12} lg={6}>
-                <CustomFormLabel htmlFor="designation" sx={{ mt: 0 }}>
-                  Designation
-                </CustomFormLabel>
-                <CustomTextField
-                  id="designation"
-                  variant="outlined"
-                  fullWidth
-                  value={formData.designation}
-                  onChange={(e) => handleChange('designation', e.target.value)}
                 />
               </Grid>
 
@@ -250,15 +237,15 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
               </Grid>
 
               <Grid item xs={12} lg={6}>
-                <CustomFormLabel htmlFor="pinCode" sx={{ mt: 0 }}>
-                  Pin Code
+                <CustomFormLabel htmlFor="pincode" sx={{ mt: 0 }}>
+                  Pincode
                 </CustomFormLabel>
                 <CustomTextField
-                  id="pinCode"
+                  id="pincode"
                   variant="outlined"
                   fullWidth
-                  value={formData.pinCode}
-                  onChange={(e) => handleChange('pinCode', e.target.value)}
+                  value={formData.pincode}
+                  onChange={(e) => handleChange('pincode', e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} lg={6}>

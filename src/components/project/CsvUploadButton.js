@@ -6,6 +6,7 @@ const CsvUploadButton = ({ onFileUpload }) => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    console.log('event', file);
     if (file) {
       onFileUpload(file);
     }

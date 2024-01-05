@@ -28,7 +28,7 @@ import { useNavigate } from 'react-router-dom';
 import { Quiz } from '@mui/icons-material';
 import { IconFilter, IconSearch, IconTrash } from '@tabler/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import CategoryAdd from 'src/components/project/CategoryAdd';
+import CategoryAdd from 'src/components/CategoryDialog';
 import { useGetLevelsQuery } from 'src/store/api/levelsApi';
 import { fetchCategoriesBySubjectId } from 'src/store/slices/categorySlice';
 import CustomCheckbox from '../components/forms/theme-elements/CustomCheckbox';

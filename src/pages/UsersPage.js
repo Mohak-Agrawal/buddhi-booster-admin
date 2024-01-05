@@ -8,6 +8,7 @@ import UserDialog from 'src/components/UserDialog'; // Assuming you have a UserD
 import PageContainer from 'src/components/container/PageContainer';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import { useGetFranchisesQuery } from 'src/store/api/franchisesApi';
+import { useGetSubjectsQuery } from 'src/store/api/subjectsApi';
 import { useDeleteUserMutation, useGetUsersQuery } from 'src/store/api/usersApi';
 import { setFranchises } from 'src/store/slices/franchiseSlice';
 import { setUsers } from 'src/store/slices/userSlice';
@@ -38,6 +39,14 @@ const UsersPage = () => {
     error: franchiseError,
     isLoading: isFranchiseLoading,
   } = useGetFranchisesQuery();
+
+  const {
+    data: subjects,
+    error: subjectError,
+    isLoading: isSubjectLoading,
+  } = useGetSubjectsQuery();
+
+  console.log('subjects', subjects);
 
   const [deleteUser, { isLoading: isDeleting, isError }] = useDeleteUserMutation();
 
