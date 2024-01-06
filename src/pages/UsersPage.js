@@ -132,7 +132,12 @@ const UsersPage = () => {
           renderActionItems={(row) => (
             <>
               <Tooltip title="Edit">
-                <IconButton size="small" onClick={() => handleEdit(row.id)}>
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    handleEdit(row.id);
+                  }}
+                >
                   <Edit size="1.1rem" />
                 </IconButton>
               </Tooltip>

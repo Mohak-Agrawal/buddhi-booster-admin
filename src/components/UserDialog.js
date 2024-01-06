@@ -22,12 +22,11 @@ import CustomSwitch from './forms/theme-elements/CustomSwitch';
 import CustomTextField from './forms/theme-elements/CustomTextField';
 
 const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
+  console.log('userId', userId);
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
-
   const franchises = useSelector((state) => state.franchises.franchises);
   const user = useSelector((state) => state.auth.user);
-  const allSubjects = useSelector((state) => state.subjects.subjects);
   const allLevels = useSelector((state) => {
     const subjectNamesToFilter = ['Vedic Maths', 'Abacus'];
 
@@ -57,21 +56,6 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
     { vedicMathsLevels: [], abacusLevels: [] },
   );
 
-  console.log('Vedic Maths Levels:', vedicMathsLevels);
-  console.log('Abacus Levels:', abacusLevels);
-
-  const matchedFranchise = franchises.find(
-    (franchise) => franchise.franchiseName === user.franchiseName,
-  );
-
-  if (matchedFranchise) {
-    // Do something with the matched franchise
-    console.log('Found franchise:', matchedFranchise);
-  } else {
-    // No franchise found with the given franchiseName
-    console.log('Franchise not found');
-  }
-
   const [createUserMutation] = useCreateUserMutation();
   const [updateUserMutation] = useUpdateUserMutation();
   const [isVedicMathsEnabled, setVedicMathsEnabled] = useState(false);
@@ -79,20 +63,19 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
   const [vedicMathsLevel, setVedicMathsLevel] = useState(null);
   const [abacusLevel, setAbacusLevel] = useState(null);
 
-  const handleVedicMathsToggle = () => {
-    setVedicMathsEnabled((prev) => !prev);
-  };
-  const handleAbacusToggle = () => {
-    setAbacusEnabled((prev) => !prev);
+  const handleToggle = (setter) => {
+    setter((prev) => !prev);
   };
 
   const isEditMode = !!userId;
+
+  console.log({ franchises });
 
   const initialFormData = {
     fullName: '',
     email: '',
     phoneNumber: '',
-    franchiseId: matchedFranchise?.id,
+    franchiseId: franchises.find((franchise) => franchise.id === user.franchiseId)?.id,
     secondaryNumber: '',
     city: '',
     state: '',
@@ -100,6 +83,10 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
     pincode: '',
     address: '',
     password: '',
+    vedicMathsEnrollment: false,
+    vedicMathsLevel: '',
+    abacusEnrollment: false,
+    abacusLevel: '',
     userStatus: 'Active',
   };
 
@@ -112,7 +99,8 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
       if (user) {
         setFormData({
           ...user,
-          userStatus: user.status, // Assuming status is stored as userStatus in formData
+          confirmPassword: user.password,
+          userStatus: user.userStatus, // Assuming status is stored as userStatus in formData
         });
       }
     }
@@ -125,24 +113,17 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Add a check for password and confirm password match
     if (formData.password !== formData.confirmPassword) {
-      // Password and confirm password do not match, handle accordingly (display error, etc.)
       console.log('Password and Confirm Password do not match');
       return;
     }
 
-    // Password and Confirm Password match, proceed with the form submission
-    console.log({ formData });
-
     if (isVedicMathsEnabled) {
-      // Record Vedic Maths enrollment status and level
       formData.vedicMathsEnrollment = true;
       formData.vedicMathsLevel = vedicMathsLevel;
     }
 
     if (isAbacusEnabled) {
-      // Record Abacus enrollment status and level
       formData.abacusEnrollment = true;
       formData.abacusLevel = abacusLevel;
     }
@@ -150,7 +131,6 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
     if (isEditMode) {
       await updateUserMutation({ userId, updatedUserData: formData });
     } else {
-      // Only send the password to the server
       await createUserMutation({ ...formData, confirmPassword: undefined });
     }
 
@@ -159,13 +139,29 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
   };
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Fixed state name
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show); // Fixed function name
+  const handleClickShowPassword = () => handleToggle(setShowPassword);
+  const handleClickShowConfirmPassword = () => handleToggle(setShowConfirmPassword);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  let matchedFranchise;
+
+  if (franchises) {
+    matchedFranchise = franchises.find(
+      (franchise) => franchise.franchiseName === user.franchiseName,
+    );
+  }
+
+  const handleAbacusToggle = () => {
+    setAbacusEnabled((prev) => !prev);
+  };
+
+  const handleVedicMathsToggle = () => {
+    setVedicMathsEnabled((prev) => !prev);
   };
 
   return (
