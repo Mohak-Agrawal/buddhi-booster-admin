@@ -1,6 +1,5 @@
-import React from 'react';
-import { styled } from '@mui/material/styles';
 import { Switch } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const CustomSwitch = styled((props) => <Switch {...props} />)(({ theme }) => ({
   '&.MuiSwitch-root': {

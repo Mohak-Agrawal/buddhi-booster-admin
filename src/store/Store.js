@@ -19,6 +19,7 @@ import authSlice from './slices/authSlice';
 import categorySlice from './slices/categorySlice';
 import examSlice from './slices/examSlice';
 import franchiseSlice from './slices/franchiseSlice';
+import levelsSlice from './slices/levelsSlice';
 import questionSlice from './slices/questionSlice';
 import subjectSlice from './slices/subjectSlice';
 import userSlice from './slices/userSlice';
@@ -49,7 +50,7 @@ export const store = configureStore({
     exams: examSlice,
     user: userSlice,
     subject: subjectSlice,
-    category: categorySlice,
+    levels: levelsSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

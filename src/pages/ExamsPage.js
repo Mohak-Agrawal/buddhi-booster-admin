@@ -37,8 +37,8 @@ const ExamsPage = () => {
   const [deleteExam, { isLoading: isDeleting, isError }] = useDeleteExamMutation();
 
   const handleEdit = (id) => {
-    setExamId(id);
     toggle();
+    setExamId(id);
     console.log('Edit clicked for examId:', id);
   };
 
@@ -140,7 +140,14 @@ const ExamsPage = () => {
           )}
         />
       </Box>
-      <ExamDialog open={open} setOpen={setOpen} toggle={toggle} examId={examId} refetch={refetch} />
+      <ExamDialog
+        open={open}
+        setOpen={setOpen}
+        toggle={toggle}
+        examId={examId}
+        setExamId={setExamId}
+        refetch={refetch}
+      />
     </PageContainer>
   );
 };

@@ -1,4 +1,4 @@
-import { Delete, Edit } from '@mui/icons-material';
+import { Edit, InsertChart, ManageAccounts } from '@mui/icons-material';
 import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,9 +8,11 @@ import UserDialog from 'src/components/UserDialog'; // Assuming you have a UserD
 import PageContainer from 'src/components/container/PageContainer';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import { useGetFranchisesQuery } from 'src/store/api/franchisesApi';
+import { useGetLevelsQuery } from 'src/store/api/levelsApi';
 import { useGetSubjectsQuery } from 'src/store/api/subjectsApi';
 import { useDeleteUserMutation, useGetUsersQuery } from 'src/store/api/usersApi';
 import { setFranchises } from 'src/store/slices/franchiseSlice';
+import { setLevels } from 'src/store/slices/levelsSlice';
 import { setUsers } from 'src/store/slices/userSlice';
 
 const UsersPage = () => {
@@ -46,6 +48,8 @@ const UsersPage = () => {
     isLoading: isSubjectLoading,
   } = useGetSubjectsQuery();
 
+  const { data: levels } = useGetLevelsQuery();
+
   console.log('subjects', subjects);
 
   const [deleteUser, { isLoading: isDeleting, isError }] = useDeleteUserMutation();
@@ -78,6 +82,12 @@ const UsersPage = () => {
   };
 
   useEffect(() => {
+    if (levels) {
+      dispatch(setLevels(levels));
+    }
+  }, [dispatch, levels]);
+
+  useEffect(() => {
     if (franchises) {
       dispatch(setFranchises(franchises));
     }
@@ -90,8 +100,10 @@ const UsersPage = () => {
   }, [dispatch, users]);
 
   const headers = [
-    { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
+    { id: 'fullName', numeric: false, disablePadding: false, label: 'Name' },
     { id: 'email', numeric: false, disablePadding: false, label: 'Email' },
+    { id: 'phoneNumber', numeric: false, disablePadding: false, label: 'Phone Number' },
+    { id: 'userStatus', numeric: false, disablePadding: false, label: 'User Status' },
     // Add other user attributes as needed
   ];
 
@@ -124,9 +136,14 @@ const UsersPage = () => {
                   <Edit size="1.1rem" />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Delete">
+              <Tooltip title="Account Settings">
                 <IconButton size="small" onClick={() => handleDelete([row.id])}>
-                  <Delete size="1.1rem" />
+                  <ManageAccounts size="1.1rem" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Student's Performance">
+                <IconButton size="small" onClick={() => handleDelete([row.id])}>
+                  <InsertChart size="1.1rem" />
                 </IconButton>
               </Tooltip>
             </>

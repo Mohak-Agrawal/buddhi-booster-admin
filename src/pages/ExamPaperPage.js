@@ -117,6 +117,21 @@ const ExamPaperPage = () => {
     }
   };
 
+  const downloadCsvTemplate = () => {
+    const csvData = Papa.unparse([
+      headers
+        .filter((header) => header.id !== 'sNo') // Exclude 'S.No.' field
+        .map((header) => header.label),
+      Array(headers.length - 1).fill('Sample Data'), // Adjust the array length accordingly
+    ]);
+
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'exam_questions_template.csv';
+    link.click();
+  };
+
   useEffect(() => {
     if (parsedQuestions.length > 0) {
       uploadQuestionsToFirestore(parsedQuestions);
@@ -143,7 +158,7 @@ const ExamPaperPage = () => {
           // renderActionItems={(row) => <></>}
           renderButton={
             <Box>
-              <Button color="primary" variant="contained" fullWidth>
+              <Button color="primary" variant="contained" fullWidth onClick={downloadCsvTemplate}>
                 Download CSV Template
               </Button>
             </Box>

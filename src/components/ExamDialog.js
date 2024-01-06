@@ -16,7 +16,7 @@ import CustomFormLabel from './forms/theme-elements/CustomFormLabel';
 import CustomSelect from './forms/theme-elements/CustomSelect';
 import CustomTextField from './forms/theme-elements/CustomTextField';
 
-const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
+const ExamDialog = ({ examId, setExamId, open, setOpen, toggle, refetch }) => {
   const dispatch = useDispatch();
   const exams = useSelector((state) => state.exams.exams);
   const subjects = useSelector((state) => state.subject.subjects);
@@ -29,12 +29,14 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
 
   const initialFormData = {
     examName: '',
-    date: new Date().toISOString().split('T')[0], // Initialize with the current date
+    date: new Date().toISOString().split('T')[0],
     duration: '',
     subjectId: '',
     examFees: '',
-    description: '', // Add the description field
+    description: '',
     status: 'Active',
+    marksForCorrectAnswer: '',
+    negativeMarksForWrongAnswer: '',
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -54,15 +56,20 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
   }, [isEditMode, examId, exams]);
 
   const handleChange = (field, value) => {
-    // Ensure only integer values are allowed for the 'duration' field
-    if (field === 'duration' && !Number.isInteger(Number(value))) {
-      return;
+    if (
+      field === 'duration' ||
+      field === 'marksForCorrectAnswer' ||
+      field === 'negativeMarksForWrongAnswer'
+    ) {
+      // Ensure only integer values are allowed for these fields
+      if (!Number.isInteger(Number(value))) {
+        return;
+      }
     }
 
     if (field === 'date') {
       setFormData((prevData) => ({ ...prevData, [field]: value }));
     } else if (field === 'subjectId') {
-      // Set the subject name based on the selected subject ID
       const subjectName = getSubjectName(value);
       setFormData((prevData) => ({ ...prevData, [field]: value, subjectName }));
     } else {
@@ -85,14 +92,20 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
     } else {
       await createExamMutation(formData);
     }
+
     refetch();
+    closeDialog();
+  };
+
+  const closeDialog = () => {
+    setExamId('');
     toggle();
   };
 
   return (
     <Dialog
       open={open}
-      onClose={toggle}
+      onClose={closeDialog}
       maxWidth="md"
       fullWidth
       aria-labelledby="exam-dialog-title"
@@ -137,7 +150,7 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
 
               <Grid item xs={12} lg={6}>
                 <CustomFormLabel htmlFor="duration" sx={{ mt: 0 }}>
-                  Duration (hours)
+                  Duration (minutes)
                 </CustomFormLabel>
                 <CustomTextField
                   id="duration"
@@ -167,6 +180,32 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
                     ))}
                   </CustomSelect>
                 </FormControl>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <CustomFormLabel htmlFor="marksForCorrectAnswer" sx={{ mt: 0 }}>
+                  Marks for Correct Answer
+                </CustomFormLabel>
+                <CustomTextField
+                  id="marksForCorrectAnswer"
+                  variant="outlined"
+                  fullWidth
+                  type="number"
+                  value={formData.marksForCorrectAnswer}
+                  onChange={(e) => handleChange('marksForCorrectAnswer', e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <CustomFormLabel htmlFor="negativeMarksForWrongAnswer" sx={{ mt: 0 }}>
+                  Negative Marks for Wrong Answer
+                </CustomFormLabel>
+                <CustomTextField
+                  id="negativeMarksForWrongAnswer"
+                  variant="outlined"
+                  fullWidth
+                  type="number"
+                  value={formData.negativeMarksForWrongAnswer}
+                  onChange={(e) => handleChange('negativeMarksForWrongAnswer', e.target.value)}
+                />
               </Grid>
               <Grid item xs={12} lg={12}>
                 <CustomFormLabel htmlFor="description" sx={{ mt: 0 }}>
@@ -220,7 +259,7 @@ const ExamDialog = ({ examId, open, setOpen, toggle, refetch }) => {
                 >
                   {isEditMode ? 'Update' : 'Submit'}
                 </Button>
-                <Button variant="contained" color="error" onClick={toggle}>
+                <Button variant="contained" color="error" onClick={closeDialog}>
                   Cancel
                 </Button>
               </Grid>
