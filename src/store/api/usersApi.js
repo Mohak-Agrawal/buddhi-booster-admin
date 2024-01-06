@@ -26,7 +26,7 @@ export const userApi = createApi({
       query: ({ userId, updatedUser }) => ({
         url: `users/${userId}`,
         method: 'PUT',
-        body: updatedUser,
+        body: { ...updatedUser },
       }),
     }),
   }),

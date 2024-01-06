@@ -51,12 +51,12 @@ const AdminMenuItems = [
   //   icon: IconAperture,
   //   href: '/dashboard/questions',
   // },
-  {
-    id: uniqueId(),
-    title: 'Lectures',
-    icon: IconAperture,
-    href: '/dashboard/lectures',
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: 'Lectures',
+  //   icon: IconAperture,
+  //   href: '/dashboard/lectures',
+  // },
   {
     navlabel: true,
     subheader: 'Management',

@@ -58,10 +58,6 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
 
   const [createUserMutation] = useCreateUserMutation();
   const [updateUserMutation] = useUpdateUserMutation();
-  const [isVedicMathsEnabled, setVedicMathsEnabled] = useState(false);
-  const [isAbacusEnabled, setAbacusEnabled] = useState(false);
-  const [vedicMathsLevel, setVedicMathsLevel] = useState(null);
-  const [abacusLevel, setAbacusLevel] = useState(null);
 
   const handleToggle = (setter) => {
     setter((prev) => !prev);
@@ -118,20 +114,24 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
       return;
     }
 
-    if (isVedicMathsEnabled) {
-      formData.vedicMathsEnrollment = true;
-      formData.vedicMathsLevel = vedicMathsLevel;
-    }
-
-    if (isAbacusEnabled) {
-      formData.abacusEnrollment = true;
-      formData.abacusLevel = abacusLevel;
-    }
+    console.log('formData', formData);
 
     if (isEditMode) {
-      await updateUserMutation({ userId, updatedUserData: formData });
+      try {
+        await updateUserMutation({ userId, updatedUser: formData });
+        console.log('User updated successfully');
+      } catch (updateError) {
+        console.error('Error updating user:', updateError);
+        // Handle update error, you might want to show a notification or take other actions
+      }
     } else {
-      await createUserMutation({ ...formData, confirmPassword: undefined });
+      try {
+        await createUserMutation({ ...formData, confirmPassword: undefined });
+        console.log('User created successfully');
+      } catch (createError) {
+        console.error('Error creating user:', createError);
+        // Handle create error, you might want to show a notification or take other actions
+      }
     }
 
     refetch();
@@ -157,11 +157,16 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
   }
 
   const handleAbacusToggle = () => {
-    setAbacusEnabled((prev) => !prev);
+    setFormData((prevData) => ({
+      ...prevData,
+      abacusEnrollment: !prevData.abacusEnrollment,
+    }));
   };
-
   const handleVedicMathsToggle = () => {
-    setVedicMathsEnabled((prev) => !prev);
+    setFormData((prevData) => ({
+      ...prevData,
+      vedicMathsEnrollment: !prevData.vedicMathsEnrollment,
+    }));
   };
 
   return (
@@ -200,9 +205,10 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
               </Grid>
               <Grid item xs={12} lg={6}>
                 <CustomFormLabel htmlFor="email" sx={{ mt: 0 }}>
-                  Email
+                  Email*
                 </CustomFormLabel>
                 <CustomTextField
+                  required
                   id="email"
                   variant="outlined"
                   fullWidth
@@ -212,9 +218,10 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
               </Grid>
               <Grid item xs={12} lg={6}>
                 <CustomFormLabel htmlFor="phoneNumber" sx={{ mt: 0 }}>
-                  Phone Number
+                  Phone Number*
                 </CustomFormLabel>
                 <CustomTextField
+                  required
                   id="phoneNumber"
                   variant="outlined"
                   fullWidth
@@ -228,10 +235,11 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
               ) : (
                 <Grid item xs={12} lg={6}>
                   <CustomFormLabel htmlFor="franchiseId" sx={{ mt: 0 }}>
-                    Franchise Name
+                    Franchise Name*
                   </CustomFormLabel>
                   <FormControl fullWidth variant="outlined">
                     <CustomSelect
+                      required
                       id="franchiseId"
                       value={formData.franchiseId}
                       onChange={(e) => handleChange('franchiseId', e.target.value)}
@@ -250,7 +258,7 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
 
               <Grid item xs={12} lg={6}>
                 <CustomFormLabel htmlFor="password" sx={{ mt: 0 }}>
-                  Password
+                  Password*
                 </CustomFormLabel>
                 <CustomOutlinedInput
                   type={showPassword ? 'text' : 'password'}
@@ -266,6 +274,7 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
                       </IconButton>
                     </InputAdornment>
                   }
+                  required
                   id="password"
                   variant="outlined"
                   fullWidth
@@ -275,7 +284,7 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
               </Grid>
               <Grid item xs={12} lg={6}>
                 <CustomFormLabel htmlFor="confirmPassword" sx={{ mt: 0 }}>
-                  Confirm Password
+                  Confirm Password*
                 </CustomFormLabel>
                 <CustomOutlinedInput
                   type={showConfirmPassword ? 'text' : 'password'}
@@ -291,6 +300,7 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
                       </IconButton>
                     </InputAdornment>
                   }
+                  required
                   id="confirmPassword"
                   variant="outlined"
                   fullWidth
@@ -310,16 +320,19 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
                   <CustomFormLabel htmlFor="secondaryNumber" sx={{ mt: 0 }}>
                     Vedic Maths Enrollment
                   </CustomFormLabel>
-                  <CustomSwitch checked={isVedicMathsEnabled} onChange={handleVedicMathsToggle} />
+                  <CustomSwitch
+                    checked={formData.vedicMathsEnrollment}
+                    onChange={handleVedicMathsToggle}
+                  />
                 </div>
                 <FormControl fullWidth variant="outlined">
                   <CustomSelect
                     id="vedicMathsLevel"
-                    value={vedicMathsLevel}
-                    onChange={(e) => setVedicMathsLevel(e.target.value)}
+                    value={formData.vedicMathsLevel}
+                    onChange={(e) => handleChange('vedicMathsLevel', e.target.value)}
                     fullWidth
                     variant="outlined"
-                    disabled={!isVedicMathsEnabled}
+                    disabled={!formData.vedicMathsEnrollment}
                   >
                     {vedicMathsLevels
                       .sort((a, b) => a.sNo - b.sNo)
@@ -343,16 +356,16 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
                   <CustomFormLabel htmlFor="secondaryNumber" sx={{ mt: 0 }}>
                     Abacus Enrollment
                   </CustomFormLabel>
-                  <CustomSwitch checked={isAbacusEnabled} onChange={handleAbacusToggle} />
+                  <CustomSwitch checked={formData.abacusEnrollment} onChange={handleAbacusToggle} />
                 </div>
                 <FormControl fullWidth variant="outlined">
                   <CustomSelect
                     id="abacusLevel"
-                    value={abacusLevel}
-                    onChange={(e) => setAbacusLevel(e.target.value)}
+                    value={formData.abacusLevel}
+                    onChange={(e) => handleChange('abacusLevel', e.target.value)}
                     fullWidth
                     variant="outlined"
-                    disabled={!isAbacusEnabled}
+                    disabled={!formData.abacusEnrollment}
                   >
                     {abacusLevels
                       .sort((a, b) => a.sNo - b.sNo)
