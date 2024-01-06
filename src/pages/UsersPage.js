@@ -1,6 +1,7 @@
 import { Edit, InsertChart, ManageAccounts } from '@mui/icons-material';
 import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { CSVLink } from 'react-csv';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import TableLayout from 'src/components/TableLayout';
@@ -99,13 +100,35 @@ const UsersPage = () => {
     }
   }, [dispatch, users]);
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredUsers = users
+    ? users.filter(
+        (user) =>
+          user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.phoneNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.userStatus.toLowerCase().includes(searchTerm.toLowerCase()),
+        // Add other fields as needed
+      )
+    : [];
+
   const headers = [
     { id: 'fullName', numeric: false, disablePadding: false, label: 'Name' },
     { id: 'email', numeric: false, disablePadding: false, label: 'Email' },
+    // { id: 'franchiseId', numeric: false, disablePadding: false, label: 'Email' },
     { id: 'phoneNumber', numeric: false, disablePadding: false, label: 'Phone Number' },
     { id: 'userStatus', numeric: false, disablePadding: false, label: 'User Status' },
     // Add other user attributes as needed
   ];
+
+  const csvData = users
+    ? users.map((user) => ({
+        fullName: user.fullName,
+        email: user.email,
+        password: user.password,
+      }))
+    : [];
 
   if (isLoading || isDeleting || isFranchiseLoading) return <h1>Loading</h1>;
 
@@ -115,15 +138,32 @@ const UsersPage = () => {
       <Box>
         <TableLayout
           headers={headers}
-          rows={users ?? []}
-          handleSearch={(event) => console.log('Search:', event.target.value)}
-          search=""
+          rows={filteredUsers ?? []}
+          handleSearch={(event) => setSearchTerm(event.target.value)}
+          search={searchTerm}
           subjectId="yourSubjectId"
           searchPlaceholder={'Search Users'}
           navigate={(path) => console.log('Navigate to:', path)}
           handleDelete={handleDelete}
           renderButton={
-            <Box>
+            <Box
+              style={{
+                flex: 1,
+                display: 'flex',
+                width: '100%',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+              }}
+            >
+              <CSVLink
+                data={csvData}
+                filename={`users_${new Date().toISOString()}.csv`}
+                style={{ textDecoration: 'none', color: 'inherit', marginRight: 10, width: '100%' }}
+              >
+                <Button color="primary" variant="contained" fullWidth>
+                  Download Users Data
+                </Button>
+              </CSVLink>
               <Button color="primary" variant="contained" fullWidth onClick={toggle}>
                 Add New User
               </Button>

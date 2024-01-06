@@ -146,7 +146,7 @@ const EnhancedTableToolbar = (props) => {
       ) : (
         <Box
           style={{
-            flex: 1,
+            flex: 3,
             display: 'flex',
             width: '100%',
             justifyContent: 'space-between',
@@ -178,7 +178,18 @@ const EnhancedTableToolbar = (props) => {
         </Tooltip>
       ) : (
         <>
-          <Box mr={1}>{renderButton}</Box>
+          <Box
+            mr={1}
+            style={{
+              flex: 1,
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'end',
+              flexDirection: 'row',
+            }}
+          >
+            {renderButton}
+          </Box>
         </>
       )}
     </Toolbar>

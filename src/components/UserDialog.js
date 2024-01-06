@@ -71,7 +71,7 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
     fullName: '',
     email: '',
     phoneNumber: '',
-    franchiseId: franchises.find((franchise) => franchise.id === user.franchiseId)?.id,
+    franchiseId: '',
     secondaryNumber: '',
     city: '',
     state: '',
@@ -92,6 +92,8 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
     if (isEditMode && userId) {
       const user = users.find((user) => user.id === userId);
 
+      console.log('user', user);
+
       if (user) {
         setFormData({
           ...user,
@@ -103,7 +105,24 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
   }, [isEditMode, userId, users]);
 
   const handleChange = (field, value) => {
-    setFormData((prevData) => ({ ...prevData, [field]: value }));
+    if (field === 'fullName') {
+      const firstName = value.split(' ')[0].toLowerCase();
+      const generatedEmail = `${firstName}@buddhibooster.com`;
+
+      // Capitalize the first letter of the generated password
+      const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+      const generatedPassword = `${capitalizedFirstName}@123`;
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [field]: value,
+        email: generatedEmail,
+        password: generatedPassword,
+        confirmPassword: generatedPassword,
+      }));
+    } else {
+      setFormData((prevData) => ({ ...prevData, [field]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -135,7 +154,7 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
     }
 
     refetch();
-    toggle();
+    handleClose();
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -151,10 +170,10 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
   let matchedFranchise;
 
   if (franchises) {
-    matchedFranchise = franchises.find(
-      (franchise) => franchise.franchiseName === user.franchiseName,
-    );
+    matchedFranchise = franchises.find((franchise) => franchise.id === user.franchiseId);
   }
+
+  console.log({ matchedFranchise });
 
   const handleAbacusToggle = () => {
     setFormData((prevData) => ({
@@ -169,10 +188,18 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
     }));
   };
 
+  const handleClose = () => {
+    // Reset the form data when the dialog is dismissed
+
+    setFormData(initialFormData);
+    // Close the dialog
+    toggle();
+  };
+
   return (
     <Dialog
       open={open}
-      onClose={toggle}
+      onClose={handleClose}
       maxWidth="md"
       fullWidth
       aria-labelledby="user-dialog-title"
@@ -482,7 +509,7 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
                 >
                   {isEditMode ? 'Update' : 'Submit'}
                 </Button>
-                <Button variant="contained" color="error" onClick={toggle}>
+                <Button variant="contained" color="error" onClick={handleClose}>
                   Cancel
                 </Button>
               </Grid>

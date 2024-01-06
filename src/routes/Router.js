@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
+import ExamResultsPage from 'src/pages/ExamResultsPage';
 import UserDetailsPage from 'src/pages/UserDetailsPage';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
 
@@ -44,6 +45,7 @@ const Router = [
           { path: '/dashboard/franchises', element: <FranchisePage /> },
           { path: '/dashboard/exams', element: <ExamPage /> },
           { path: '/dashboard/exam-questions/:examId', element: <ExamPaperPage /> },
+          { path: '/dashboard/exam-results/:examId', element: <ExamResultsPage /> },
           { path: '/dashboard/lectures', element: <LecturesPage /> },
           { path: '/dashboard/users', element: <UsersPage /> },
           { path: '/dashboard/userDetails/:userId', element: <UserDetailsPage /> },
