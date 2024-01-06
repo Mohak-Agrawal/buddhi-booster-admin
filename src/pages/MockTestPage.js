@@ -85,7 +85,7 @@ const MockTestPage = () => {
       disablePadding: false,
       label: 'Subject',
     },
-    { id: 'duration', numeric: false, disablePadding: false, label: 'Duration (hours)' },
+    { id: 'duration', numeric: false, disablePadding: false, label: 'Duration (minutes)' },
     // {
     //   id: 'studentsRegistered',
     //   numeric: false,
