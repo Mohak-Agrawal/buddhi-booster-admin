@@ -1,12 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Grid, Box, Card, Stack, Typography } from '@mui/material';
+import { Box, Card, Grid } from '@mui/material';
 
 // components
 import PageContainer from 'src/components/container/PageContainer';
-import Logo from 'src/layouts/full/shared/logo/Logo';
-import AuthLogin from '../views/authentication/authForms/AuthLogin';
 import logo from '../assets/images/logos/logo.png';
+import AuthLogin from '../views/authentication/authForms/AuthLogin';
 const Login = () => {
   return (
     <PageContainer title="Login" description="this is Login page">
@@ -40,29 +37,9 @@ const Login = () => {
           >
             <Card elevation={9} sx={{ p: 4, zIndex: 1, width: '100%', maxWidth: '450px' }}>
               <Box display="flex" alignItems="center" justifyContent="center">
-                {/* <Logo /> */}
                 <img src={logo} style={{ width: '50%' }} />
               </Box>
-              <AuthLogin
-                subtitle={
-                  <Stack direction="row" spacing={1} justifyContent="center" mt={3}>
-                    <Typography color="textSecondary" variant="h6" fontWeight="500">
-                      New to Modernize?
-                    </Typography>
-                    <Typography
-                      component={Link}
-                      to="/auth/register"
-                      fontWeight="500"
-                      sx={{
-                        textDecoration: 'none',
-                        color: 'primary.main',
-                      }}
-                    >
-                      Create an account
-                    </Typography>
-                  </Stack>
-                }
-              />
+              <AuthLogin />
             </Card>
           </Grid>
         </Grid>

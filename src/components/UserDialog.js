@@ -218,10 +218,9 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
               </Grid>
               <Grid item xs={12} lg={6}>
                 <CustomFormLabel htmlFor="phoneNumber" sx={{ mt: 0 }}>
-                  Phone Number*
+                  Phone Number
                 </CustomFormLabel>
                 <CustomTextField
-                  required
                   id="phoneNumber"
                   variant="outlined"
                   fullWidth

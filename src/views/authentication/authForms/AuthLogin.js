@@ -1,15 +1,14 @@
 import { Box, Button, FormControlLabel, FormGroup, Stack, Typography } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from 'src/store/api/authApi';
 import { loginUser, singleLogin } from 'src/store/slices/authSlice';
 import CustomCheckbox from '../../../components/forms/theme-elements/CustomCheckbox';
 import CustomFormLabel from '../../../components/forms/theme-elements/CustomFormLabel';
 import CustomTextField from '../../../components/forms/theme-elements/CustomTextField';
 
-const AuthLogin = ({ title, subtitle, subtext }) => {
+const AuthLogin = ({ title, subtext }) => {
   const navigate = useNavigate();
   const [login, { isLoading }] = useLoginMutation();
   const [isChecked, setIsChecked] = useState(true);
@@ -24,7 +23,6 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
 
     try {
       const result = await login({ email, password });
-      console.log({ result });
 
       if (result.error) {
         // dispatch(setShowAlert(true));
@@ -33,7 +31,6 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
       const user = result.data;
       if (user) {
         if (isChecked) {
-          console.log('first');
           dispatch(loginUser({ user }));
         } else {
           dispatch(singleLogin(true));
@@ -80,17 +77,6 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
                 label="Remember this Device"
               />
             </FormGroup>
-            <Typography
-              component={Link}
-              to="/auth/forgot-password"
-              fontWeight="500"
-              sx={{
-                textDecoration: 'none',
-                color: 'primary.main',
-              }}
-            >
-              Forgot Password?
-            </Typography>
           </Stack>
         </Stack>
         <Box>
@@ -106,7 +92,6 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
           </Button>
         </Box>
       </form>
-      {/* {subtitle} */}
     </>
   );
 };

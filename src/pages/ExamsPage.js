@@ -1,4 +1,4 @@
-import { Edit, Quiz } from '@mui/icons-material';
+import { Assessment, Edit, Quiz } from '@mui/icons-material';
 import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -134,6 +134,16 @@ const ExamsPage = () => {
                   }}
                 >
                   <Quiz size="1.1rem" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="View Results">
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    navigate(`/dashboard/exam-results/${row.id}`);
+                  }}
+                >
+                  <Assessment size="1.1rem" />
                 </IconButton>
               </Tooltip>
             </>
