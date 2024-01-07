@@ -107,11 +107,13 @@ const UserDialog = ({ userId, open, setOpen, toggle, refetch }) => {
   const handleChange = (field, value) => {
     if (field === 'fullName') {
       const firstName = value.split(' ')[0].toLowerCase();
-      const generatedEmail = `${firstName}@buddhibooster.com`;
+      const generatedEmail = `${firstName}${Math.floor(Math.random() * 10000)}@buddhibooster.com`;
 
-      // Capitalize the first letter of the generated password
-      const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
-      const generatedPassword = `${capitalizedFirstName}@123`;
+      // Generate a miscellaneous strong 10-digit password
+      const generatedPassword = Math.random()
+        .toString(36)
+        .slice(2, 12)
+        .replace(/[a-z]/g, (c) => (Math.random() > 0.5 ? c.toUpperCase() : c));
 
       setFormData((prevData) => ({
         ...prevData,

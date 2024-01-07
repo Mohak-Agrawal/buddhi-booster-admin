@@ -160,7 +160,7 @@ const UsersPage = () => {
                 filename={`users_${new Date().toISOString()}.csv`}
                 style={{ textDecoration: 'none', color: 'inherit', marginRight: 10, width: '100%' }}
               >
-                <Button color="primary" variant="contained" fullWidth>
+                <Button color="primary" variant="outlined" fullWidth>
                   Download Users Data
                 </Button>
               </CSVLink>

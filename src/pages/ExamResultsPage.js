@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import TableLayout from 'src/components/TableLayout';
 import PageContainer from 'src/components/container/PageContainer';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
-import { useGetAllUsersScoresQuery } from 'src/store/api/examsApi';
+import { useGetAllUsersScoresQuery, useUpdateExamMutation } from 'src/store/api/examsApi';
 
 const ExamResultsPage = () => {
   const { examId } = useParams();
@@ -13,6 +13,7 @@ const ExamResultsPage = () => {
 
   const { data: examScores, isLoading: scoresLoading, refetch } = useGetAllUsersScoresQuery(examId);
   console.log('examScores', examScores);
+  const [updateExamMutation] = useUpdateExamMutation();
 
   useEffect(() => {
     refetch();
@@ -35,6 +36,12 @@ const ExamResultsPage = () => {
       disablePadding: false,
       label: 'Attempted Questions',
     },
+    {
+      id: 'correctAnswers',
+      numeric: false,
+      disablePadding: false,
+      label: 'Correct Questions',
+    },
     { id: 'wrongAnswers', numeric: false, disablePadding: false, label: 'Wrong Answers' },
     { id: 'skippedQuestions', numeric: false, disablePadding: false, label: 'Skipped Questions' },
   ];
@@ -56,6 +63,10 @@ const ExamResultsPage = () => {
     wrongAnswers: score.wrongAnswers,
     skippedQuestions: score.skippedQuestions,
   }));
+
+  const toggleResult = async () => {
+    // await updateExamMutation({ examId, updatedExamData: formData });
+  };
 
   if (scoresLoading) return <h1>Loading</h1>;
 
@@ -81,17 +92,25 @@ const ExamResultsPage = () => {
           // handleDelete={handleDelete}
           // renderActionItems={(row) => <></>}
           renderButton={
-            <Box>
+            <>
+              <Button
+                color="primary"
+                variant="outlined"
+                style={{ marginRight: 10 }}
+                onClick={toggleResult}
+              >
+                Publish Result
+              </Button>
               <CSVLink
                 data={csvData}
                 headers={headers.map((header) => ({ label: header.label, key: header.id }))}
                 filename={`exam_results_${examId}.csv`}
               >
-                <Button color="primary" variant="contained" fullWidth>
+                <Button color="primary" variant="contained">
                   Download Result
                 </Button>
               </CSVLink>
-            </Box>
+            </>
           }
         />
       </Box>
