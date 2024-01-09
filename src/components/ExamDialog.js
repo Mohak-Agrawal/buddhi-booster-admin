@@ -48,7 +48,7 @@ const ExamDialog = ({ examId, setExamId, open, setOpen, toggle, refetch }) => {
       if (exam) {
         setFormData({
           ...exam,
-          date: exam.date.split('T')[0],
+          date: exam.date,
           subjectName: getSubjectName(exam.subjectId),
         });
       }

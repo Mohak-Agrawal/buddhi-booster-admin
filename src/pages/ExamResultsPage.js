@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useParams } from 'react-router';
 import TableLayout from 'src/components/TableLayout';
@@ -53,6 +53,8 @@ const ExamResultsPage = () => {
     return `${minutes}m ${remainingSeconds}s`;
   };
 
+  const [searchTerm, setSearchTerm] = useState('');
+
   // Function to handle CSV download
   const csvData = examScores?.map((score, index) => ({
     rank: index + 1,
@@ -73,6 +75,13 @@ const ExamResultsPage = () => {
   // Sort the rows based on the score in descending order
   const sortedRows = examScores?.slice().map((score, index) => ({ ...score, rank: index + 1 }));
 
+  const filteredUsers = sortedRows
+    ? sortedRows.filter(
+        (user) => user.fullName.toLowerCase().includes(searchTerm.toLowerCase()),
+        // Add other fields as needed
+      )
+    : [];
+
   return (
     <PageContainer title={'Exam Questions'} description={'description'}>
       <Breadcrumb title={'User Scores'} items={BCrumb} />
@@ -80,12 +89,12 @@ const ExamResultsPage = () => {
       <Box>
         <TableLayout
           headers={headers}
-          rows={sortedRows.map((score) => ({
+          rows={filteredUsers.map((score) => ({
             ...score,
             completionTime: convertSecondsToMinutes(score.completionTime),
           }))}
-          handleSearch={(event) => console.log('Search:', event.target.value)}
-          search=""
+          handleSearch={(event) => setSearchTerm(event.target.value)}
+          search={searchTerm}
           subjectId="yourSubjectId"
           searchPlaceholder={'Search Questions'}
           navigate={(path) => console.log('Navigate to:', path)}

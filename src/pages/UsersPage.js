@@ -148,10 +148,10 @@ const UsersPage = () => {
           renderButton={
             <Box
               style={{
-                flex: 1,
+                // flex: 1,
                 display: 'flex',
-                width: '100%',
                 justifyContent: 'space-between',
+                alignItems: 'center',
                 flexDirection: 'row',
               }}
             >
@@ -161,7 +161,7 @@ const UsersPage = () => {
                 style={{ textDecoration: 'none', color: 'inherit', marginRight: 10, width: '100%' }}
               >
                 <Button color="primary" variant="outlined" fullWidth>
-                  Download Users Data
+                  Download Data
                 </Button>
               </CSVLink>
               <Button color="primary" variant="contained" fullWidth onClick={toggle}>
