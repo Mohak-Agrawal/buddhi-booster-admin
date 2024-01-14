@@ -1,6 +1,6 @@
-import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import ExamResultsPage from 'src/pages/ExamResultsPage';
 import UserDetailsPage from 'src/pages/UserDetailsPage';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
@@ -26,8 +26,18 @@ const UsersPage = Loadable(lazy(() => import('src/pages/UsersPage')));
 const ProtectedRoutes = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const singleLogin = useSelector((state) => state.auth.singleLogin);
-  console.log({ isAuthenticated });
-  return isAuthenticated || singleLogin ? <Outlet /> : <Navigate to="auth/login" />;
+  const navigate = useNavigate();
+
+  // Use an effect to navigate based on authentication status
+  useEffect(() => {
+    if (!(isAuthenticated || singleLogin)) {
+      // Use Navigate inside the effect to avoid the warning
+      navigate('auth/login');
+    } else navigate('dashboard/home');
+  }, [isAuthenticated, singleLogin]);
+
+  // Render the Outlet or null based on authentication status
+  return isAuthenticated || singleLogin ? <Outlet /> : null;
 };
 
 const Router = [

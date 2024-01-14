@@ -59,6 +59,12 @@ const examsApi = createApi({
     getAllUsersScores: builder.query({
       query: (examId) => `examSessions/getAllUsersScores/${examId}`,
     }),
+    deleteExamSession: builder.mutation({
+      query: ({ userId, examId }) => ({
+        url: `examSessions/${userId}/${examId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -74,6 +80,7 @@ export const {
   useUpdateQuestionForExamMutation,
   useDeleteQuestionForExamMutation,
   useGetAllUsersScoresQuery,
+  useDeleteExamSessionMutation,
 } = examsApi;
 
 export default examsApi;

@@ -146,28 +146,20 @@ const UsersPage = () => {
           navigate={(path) => console.log('Navigate to:', path)}
           handleDelete={handleDelete}
           renderButton={
-            <Box
-              style={{
-                // flex: 1,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}
-            >
+            <>
               <CSVLink
                 data={csvData}
                 filename={`users_${new Date().toISOString()}.csv`}
-                style={{ textDecoration: 'none', color: 'inherit', marginRight: 10, width: '100%' }}
+                style={{ marginRight: 10 }}
               >
-                <Button color="primary" variant="outlined" fullWidth>
+                <Button color="primary" variant="outlined">
                   Download Data
                 </Button>
               </CSVLink>
-              <Button color="primary" variant="contained" fullWidth onClick={toggle}>
+              <Button color="primary" variant="contained" onClick={toggle}>
                 Add New User
               </Button>
-            </Box>
+            </>
           }
           renderActionItems={(row) => (
             <>

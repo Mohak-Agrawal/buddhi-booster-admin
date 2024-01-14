@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import TableLayout from 'src/components/TableLayout';
 import PageContainer from 'src/components/container/PageContainer';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
-import { useGetAllUsersScoresQuery, useUpdateExamMutation } from 'src/store/api/examsApi';
+import { useDeleteExamSessionMutation, useGetAllUsersScoresQuery } from 'src/store/api/examsApi';
 
 const ExamResultsPage = () => {
   const { examId } = useParams();
@@ -13,7 +13,30 @@ const ExamResultsPage = () => {
 
   const { data: examScores, isLoading: scoresLoading, refetch } = useGetAllUsersScoresQuery(examId);
   console.log('examScores', examScores);
-  const [updateExamMutation] = useUpdateExamMutation();
+
+  const [deleteExamSession, { isLoading: isDeleting }] = useDeleteExamSessionMutation();
+
+  const handleDelete = (ids) => {
+    console.log({ ids });
+
+    const deletePromises = ids.map((id) =>
+      deleteExamSession({ userId: id, examId })
+        .unwrap()
+        .then((deletedExamId) => {
+          console.log(`Exam with ID ${deletedExamId} deleted successfully`);
+          return deletedExamId;
+        }),
+    );
+
+    Promise.all(deletePromises)
+      .then(() => {
+        console.log('Refetch');
+        refetch();
+      })
+      .catch((error) => {
+        console.error('Failed to delete exams:', error);
+      });
+  };
 
   useEffect(() => {
     refetch();
@@ -62,6 +85,7 @@ const ExamResultsPage = () => {
     score: score.score,
     completionTime: convertSecondsToMinutes(score.completionTime),
     attemptedQuestions: score.attemptedQuestions,
+    correctAnswers: score.correctAnswers,
     wrongAnswers: score.wrongAnswers,
     skippedQuestions: score.skippedQuestions,
   }));
@@ -70,10 +94,10 @@ const ExamResultsPage = () => {
     // await updateExamMutation({ examId, updatedExamData: formData });
   };
 
-  if (scoresLoading) return <h1>Loading</h1>;
+  if (scoresLoading || isDeleting) return <h1>Loading</h1>;
 
   // Sort the rows based on the score in descending order
-  const sortedRows = examScores?.slice().map((score, index) => ({ ...score, rank: index + 1 }));
+  const sortedRows = examScores?.map((score, index) => ({ ...score, rank: index + 1 }));
 
   const filteredUsers = sortedRows
     ? sortedRows.filter(
@@ -98,18 +122,10 @@ const ExamResultsPage = () => {
           subjectId="yourSubjectId"
           searchPlaceholder={'Search Questions'}
           navigate={(path) => console.log('Navigate to:', path)}
-          // handleDelete={handleDelete}
+          handleDelete={handleDelete}
           // renderActionItems={(row) => <></>}
           renderButton={
             <>
-              <Button
-                color="primary"
-                variant="outlined"
-                style={{ marginRight: 10 }}
-                onClick={toggleResult}
-              >
-                Publish Result
-              </Button>
               <CSVLink
                 data={csvData}
                 headers={headers.map((header) => ({ label: header.label, key: header.id }))}

@@ -9,6 +9,9 @@ import {
   Grid,
   MenuItem,
 } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCreateExamMutation, useUpdateExamMutation } from 'src/store/api/examsApi';
@@ -29,12 +32,13 @@ const ExamDialog = ({ examId, setExamId, open, setOpen, toggle, refetch }) => {
 
   const initialFormData = {
     examName: '',
-    date: new Date().toISOString().split('T')[0],
+    date: new Date(),
     duration: '',
     subjectId: '',
     examFees: '',
     description: '',
     status: 'Active',
+    resultDeclared: false,
     marksForCorrectAnswer: '',
     negativeMarksForWrongAnswer: '',
   };
@@ -56,6 +60,7 @@ const ExamDialog = ({ examId, setExamId, open, setOpen, toggle, refetch }) => {
   }, [isEditMode, examId, exams]);
 
   const handleChange = (field, value) => {
+    if (field == 'date') console.log({ value });
     if (
       field === 'duration' ||
       field === 'marksForCorrectAnswer' ||
@@ -67,9 +72,7 @@ const ExamDialog = ({ examId, setExamId, open, setOpen, toggle, refetch }) => {
       }
     }
 
-    if (field === 'date') {
-      setFormData((prevData) => ({ ...prevData, [field]: value }));
-    } else if (field === 'subjectId') {
+    if (field === 'subjectId') {
       const subjectName = getSubjectName(value);
       setFormData((prevData) => ({ ...prevData, [field]: value, subjectName }));
     } else {
@@ -137,15 +140,38 @@ const ExamDialog = ({ examId, setExamId, open, setOpen, toggle, refetch }) => {
               </Grid>
               <Grid item xs={12} lg={6}>
                 <CustomFormLabel htmlFor="fs-date" sx={{ mt: 0 }}>
-                  Exam Date
+                  Exam Date & Time
                 </CustomFormLabel>
-                <CustomTextField
+                {/* <CustomTextField
                   type="date"
                   id="fs-date"
                   fullWidth
                   value={formData.date}
                   onChange={(e) => handleChange('date', e.target.value)}
-                />
+                /> */}
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    renderInput={(props) => (
+                      <CustomTextField
+                        {...props}
+                        fullWidth
+                        size="small"
+                        sx={{
+                          '& .MuiSvgIcon-root': {
+                            width: '18px',
+                            height: '18px',
+                          },
+                          '& .MuiFormHelperText-root': {
+                            display: 'none',
+                          },
+                        }}
+                      />
+                    )}
+                    placeholder="DateTimePicker"
+                    value={formData.date}
+                    onChange={(e) => handleChange('date', e)}
+                  />
+                </LocalizationProvider>
               </Grid>
 
               <Grid item xs={12} lg={6}>
@@ -246,6 +272,23 @@ const ExamDialog = ({ examId, setExamId, open, setOpen, toggle, refetch }) => {
                   >
                     <MenuItem value="Active">Active</MenuItem>
                     <MenuItem value="Inactive">Inactive</MenuItem>
+                  </CustomSelect>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <CustomFormLabel htmlFor="resultDeclared" sx={{ mt: 0 }}>
+                  Declare Result
+                </CustomFormLabel>
+                <FormControl fullWidth variant="outlined">
+                  <CustomSelect
+                    id="resultDeclared"
+                    value={formData.resultDeclared}
+                    onChange={(e) => handleChange('resultDeclared', e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                  >
+                    <MenuItem value={true}>Yes</MenuItem>
+                    <MenuItem value={false}>No</MenuItem>
                   </CustomSelect>
                 </FormControl>
               </Grid>

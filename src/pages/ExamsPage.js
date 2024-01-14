@@ -36,6 +36,8 @@ const ExamsPage = () => {
   const { data: subjects, error: subjectError, isLoading: subjectLoading } = useGetSubjectsQuery();
   const [deleteExam, { isLoading: isDeleting, isError }] = useDeleteExamMutation();
 
+  console.log('exams', exams);
+
   const handleEdit = (id) => {
     toggle();
     setExamId(id);
@@ -78,7 +80,7 @@ const ExamsPage = () => {
 
   const headers = [
     { id: 'examName', numeric: false, disablePadding: false, label: 'Exam Name' },
-    { id: 'date', numeric: false, disablePadding: false, label: 'Date' },
+    { id: 'date', numeric: false, disablePadding: false, label: 'Date & Time' },
     {
       id: 'subjectName',
       numeric: false,
@@ -97,6 +99,24 @@ const ExamsPage = () => {
     { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
   ];
 
+  const formattedExams = exams?.map((exam) => {
+    const examDate = new Date(exam.date);
+
+    // Format the date as "dd mm yy hh:mm am/pm"
+    const formattedDate = examDate.toLocaleString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    });
+
+    return {
+      ...exam,
+      date: formattedDate,
+    };
+  });
   if (isLoading || isDeleting) return <h1>Loading</h1>;
 
   return (
@@ -105,7 +125,7 @@ const ExamsPage = () => {
       <Box>
         <TableLayout
           headers={headers}
-          rows={exams}
+          rows={formattedExams}
           handleSearch={(event) => console.log('Search:', event.target.value)}
           search=""
           subjectId="yourSubjectId"

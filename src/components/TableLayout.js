@@ -314,7 +314,7 @@ const TableLayout = ({
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.id}
+                      key={index}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox" onClick={(event) => handleClick(event, row.id)}>

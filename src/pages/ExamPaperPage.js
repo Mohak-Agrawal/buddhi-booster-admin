@@ -132,6 +132,27 @@ const ExamPaperPage = () => {
     link.click();
   };
 
+  const downloadPaper = () => {
+    const allData = [
+      headers.map((header) => header.label),
+      ...sortedQuestions.map((row) => Object.values(row)),
+    ];
+
+    // Convert data to CSV format
+    const csvData = Papa.unparse(allData);
+
+    // Create a Blob and a download link
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const link = document.createElement('a');
+
+    // Set the download link properties
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'exam_questions_data.csv';
+
+    // Trigger a click on the link to start the download
+    link.click();
+  };
+
   useEffect(() => {
     if (parsedQuestions.length > 0) {
       uploadQuestionsToFirestore(parsedQuestions);
@@ -157,11 +178,19 @@ const ExamPaperPage = () => {
           handleDelete={handleDelete}
           // renderActionItems={(row) => <></>}
           renderButton={
-            <Box>
-              <Button color="primary" variant="contained" fullWidth onClick={downloadCsvTemplate}>
+            <>
+              <Button color="primary" variant="outlined" onClick={downloadPaper}>
+                Download Paper
+              </Button>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={downloadCsvTemplate}
+                style={{ marginLeft: 10 }}
+              >
                 Download CSV Template
               </Button>
-            </Box>
+            </>
           }
         />
       </Box>
